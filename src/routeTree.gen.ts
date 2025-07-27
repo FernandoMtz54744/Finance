@@ -11,6 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TarjetasIndexRouteImport } from './routes/tarjetas/index'
+import { Route as TarjetasEditRouteImport } from './routes/tarjetas/edit'
+import { Route as TarjetasAddRouteImport } from './routes/tarjetas/add'
+import { Route as PeriodosIdRouteImport } from './routes/periodos/$id'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -22,31 +26,86 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TarjetasIndexRoute = TarjetasIndexRouteImport.update({
+  id: '/tarjetas/',
+  path: '/tarjetas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TarjetasEditRoute = TarjetasEditRouteImport.update({
+  id: '/tarjetas/edit',
+  path: '/tarjetas/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TarjetasAddRoute = TarjetasAddRouteImport.update({
+  id: '/tarjetas/add',
+  path: '/tarjetas/add',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeriodosIdRoute = PeriodosIdRouteImport.update({
+  id: '/periodos/$id',
+  path: '/periodos/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/periodos/$id': typeof PeriodosIdRoute
+  '/tarjetas/add': typeof TarjetasAddRoute
+  '/tarjetas/edit': typeof TarjetasEditRoute
+  '/tarjetas': typeof TarjetasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/periodos/$id': typeof PeriodosIdRoute
+  '/tarjetas/add': typeof TarjetasAddRoute
+  '/tarjetas/edit': typeof TarjetasEditRoute
+  '/tarjetas': typeof TarjetasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/periodos/$id': typeof PeriodosIdRoute
+  '/tarjetas/add': typeof TarjetasAddRoute
+  '/tarjetas/edit': typeof TarjetasEditRoute
+  '/tarjetas/': typeof TarjetasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/periodos/$id'
+    | '/tarjetas/add'
+    | '/tarjetas/edit'
+    | '/tarjetas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/periodos/$id'
+    | '/tarjetas/add'
+    | '/tarjetas/edit'
+    | '/tarjetas'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/periodos/$id'
+    | '/tarjetas/add'
+    | '/tarjetas/edit'
+    | '/tarjetas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  PeriodosIdRoute: typeof PeriodosIdRoute
+  TarjetasAddRoute: typeof TarjetasAddRoute
+  TarjetasEditRoute: typeof TarjetasEditRoute
+  TarjetasIndexRoute: typeof TarjetasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +124,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tarjetas/': {
+      id: '/tarjetas/'
+      path: '/tarjetas'
+      fullPath: '/tarjetas'
+      preLoaderRoute: typeof TarjetasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tarjetas/edit': {
+      id: '/tarjetas/edit'
+      path: '/tarjetas/edit'
+      fullPath: '/tarjetas/edit'
+      preLoaderRoute: typeof TarjetasEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tarjetas/add': {
+      id: '/tarjetas/add'
+      path: '/tarjetas/add'
+      fullPath: '/tarjetas/add'
+      preLoaderRoute: typeof TarjetasAddRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/periodos/$id': {
+      id: '/periodos/$id'
+      path: '/periodos/$id'
+      fullPath: '/periodos/$id'
+      preLoaderRoute: typeof PeriodosIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  PeriodosIdRoute: PeriodosIdRoute,
+  TarjetasAddRoute: TarjetasAddRoute,
+  TarjetasEditRoute: TarjetasEditRoute,
+  TarjetasIndexRoute: TarjetasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
