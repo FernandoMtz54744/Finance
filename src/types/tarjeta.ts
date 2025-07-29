@@ -1,3 +1,6 @@
+import type { tarjetaSchema } from "@/validations/tarjetaSchema";
+import { z } from "zod"
+
 export type Tarjeta = {
     id: string
     nombre: string,
@@ -6,3 +9,5 @@ export type Tarjeta = {
     correo: string,
     color: string
 }
+
+export type TarjetaFormType = z.infer<typeof tarjetaSchema>;

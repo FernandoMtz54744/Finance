@@ -4,26 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { Tarjeta } from "@/types/tarjeta";
+import type { Tarjeta, TarjetaFormType } from "@/types/tarjeta";
 import type { JSX } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { tarjetaSchema } from "@/validations/tarjetaSchema";
 import { CreditCard } from "lucide-react";
 import FormError from "@/components/form/FormError";
-import { z } from "zod"
 import { useNavigate } from "@tanstack/react-router";
 
-type TarjetaForm = z.infer<typeof tarjetaSchema>;
+
 type Props = {
     tarjeta?: Tarjeta,
-    onSubmit: SubmitHandler<TarjetaForm>
+    onSubmit: SubmitHandler<TarjetaFormType>
 }
 
 export default function TarjetaForm({tarjeta, onSubmit}: Props): JSX.Element {
     
     const navigate = useNavigate()
-    const { register, handleSubmit, setValue, watch, control, formState:{errors} } = useForm<TarjetaForm>({
+    const { register, handleSubmit, setValue, watch, control, formState:{errors} } = useForm<TarjetaFormType>({
         resolver: zodResolver(tarjetaSchema),
         values: {
             nombre: tarjeta?.nombre ?? "",

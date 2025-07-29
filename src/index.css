@@ -124,3 +124,7 @@
     @apply mb-4;
   }
 }
+
+[data-slot='sidebar-content'] {
+  overflow-x: hidden !important;
+}
