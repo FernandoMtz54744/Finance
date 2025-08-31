@@ -12,11 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TarjetasIndexRouteImport } from './routes/tarjetas/index'
-import { Route as TarjetasEditRouteImport } from './routes/tarjetas/edit'
-import { Route as TarjetasAddRouteImport } from './routes/tarjetas/add'
-import { Route as PeriodosIdRouteImport } from './routes/periodos/$id'
+import { Route as AuthTarjetasIndexRouteImport } from './routes/_auth/tarjetas/index'
+import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/edit'
+import { Route as AuthTarjetasAddRouteImport } from './routes/_auth/tarjetas/add'
+import { Route as AuthPeriodosAddRouteImport } from './routes/_auth/periodos/add'
+import { Route as AuthPeriodosIdRouteImport } from './routes/_auth/periodos/$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -33,30 +35,39 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TarjetasIndexRoute = TarjetasIndexRouteImport.update({
+const AuthTarjetasIndexRoute = AuthTarjetasIndexRouteImport.update({
   id: '/tarjetas/',
   path: '/tarjetas/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
-const TarjetasEditRoute = TarjetasEditRouteImport.update({
+const AuthTarjetasEditRoute = AuthTarjetasEditRouteImport.update({
   id: '/tarjetas/edit',
   path: '/tarjetas/edit',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
-const TarjetasAddRoute = TarjetasAddRouteImport.update({
+const AuthTarjetasAddRoute = AuthTarjetasAddRouteImport.update({
   id: '/tarjetas/add',
   path: '/tarjetas/add',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
-const PeriodosIdRoute = PeriodosIdRouteImport.update({
+const AuthPeriodosAddRoute = AuthPeriodosAddRouteImport.update({
+  id: '/periodos/add',
+  path: '/periodos/add',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthPeriodosIdRoute = AuthPeriodosIdRouteImport.update({
   id: '/periodos/$id',
   path: '/periodos/$id',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -64,31 +75,35 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/periodos/$id': typeof PeriodosIdRoute
-  '/tarjetas/add': typeof TarjetasAddRoute
-  '/tarjetas/edit': typeof TarjetasEditRoute
-  '/tarjetas': typeof TarjetasIndexRoute
+  '/periodos/$id': typeof AuthPeriodosIdRoute
+  '/periodos/add': typeof AuthPeriodosAddRoute
+  '/tarjetas/add': typeof AuthTarjetasAddRoute
+  '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/periodos/$id': typeof PeriodosIdRoute
-  '/tarjetas/add': typeof TarjetasAddRoute
-  '/tarjetas/edit': typeof TarjetasEditRoute
-  '/tarjetas': typeof TarjetasIndexRoute
+  '/periodos/$id': typeof AuthPeriodosIdRoute
+  '/periodos/add': typeof AuthPeriodosAddRoute
+  '/tarjetas/add': typeof AuthTarjetasAddRoute
+  '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/periodos/$id': typeof PeriodosIdRoute
-  '/tarjetas/add': typeof TarjetasAddRoute
-  '/tarjetas/edit': typeof TarjetasEditRoute
-  '/tarjetas/': typeof TarjetasIndexRoute
+  '/_auth/periodos/$id': typeof AuthPeriodosIdRoute
+  '/_auth/periodos/add': typeof AuthPeriodosAddRoute
+  '/_auth/tarjetas/add': typeof AuthTarjetasAddRoute
+  '/_auth/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/_auth/tarjetas/': typeof AuthTarjetasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/periodos/$id'
+    | '/periodos/add'
     | '/tarjetas/add'
     | '/tarjetas/edit'
     | '/tarjetas'
@@ -108,30 +124,30 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/periodos/$id'
+    | '/periodos/add'
     | '/tarjetas/add'
     | '/tarjetas/edit'
     | '/tarjetas'
   id:
     | '__root__'
     | '/'
+    | '/_auth'
     | '/about'
     | '/login'
     | '/register'
-    | '/periodos/$id'
-    | '/tarjetas/add'
-    | '/tarjetas/edit'
-    | '/tarjetas/'
+    | '/_auth/periodos/$id'
+    | '/_auth/periodos/add'
+    | '/_auth/tarjetas/add'
+    | '/_auth/tarjetas/edit'
+    | '/_auth/tarjetas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
-  PeriodosIdRoute: typeof PeriodosIdRoute
-  TarjetasAddRoute: typeof TarjetasAddRoute
-  TarjetasEditRoute: typeof TarjetasEditRoute
-  TarjetasIndexRoute: typeof TarjetasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -157,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -164,46 +187,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tarjetas/': {
-      id: '/tarjetas/'
+    '/_auth/tarjetas/': {
+      id: '/_auth/tarjetas/'
       path: '/tarjetas'
       fullPath: '/tarjetas'
-      preLoaderRoute: typeof TarjetasIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthTarjetasIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/tarjetas/edit': {
-      id: '/tarjetas/edit'
+    '/_auth/tarjetas/edit': {
+      id: '/_auth/tarjetas/edit'
       path: '/tarjetas/edit'
       fullPath: '/tarjetas/edit'
-      preLoaderRoute: typeof TarjetasEditRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthTarjetasEditRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/tarjetas/add': {
-      id: '/tarjetas/add'
+    '/_auth/tarjetas/add': {
+      id: '/_auth/tarjetas/add'
       path: '/tarjetas/add'
       fullPath: '/tarjetas/add'
-      preLoaderRoute: typeof TarjetasAddRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthTarjetasAddRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/periodos/$id': {
-      id: '/periodos/$id'
+    '/_auth/periodos/add': {
+      id: '/_auth/periodos/add'
+      path: '/periodos/add'
+      fullPath: '/periodos/add'
+      preLoaderRoute: typeof AuthPeriodosAddRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/periodos/$id': {
+      id: '/_auth/periodos/$id'
       path: '/periodos/$id'
       fullPath: '/periodos/$id'
-      preLoaderRoute: typeof PeriodosIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthPeriodosIdRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
   }
 }
 
+interface AuthRouteRouteChildren {
+  AuthPeriodosIdRoute: typeof AuthPeriodosIdRoute
+  AuthPeriodosAddRoute: typeof AuthPeriodosAddRoute
+  AuthTarjetasAddRoute: typeof AuthTarjetasAddRoute
+  AuthTarjetasEditRoute: typeof AuthTarjetasEditRoute
+  AuthTarjetasIndexRoute: typeof AuthTarjetasIndexRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthPeriodosIdRoute: AuthPeriodosIdRoute,
+  AuthPeriodosAddRoute: AuthPeriodosAddRoute,
+  AuthTarjetasAddRoute: AuthTarjetasAddRoute,
+  AuthTarjetasEditRoute: AuthTarjetasEditRoute,
+  AuthTarjetasIndexRoute: AuthTarjetasIndexRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
-  PeriodosIdRoute: PeriodosIdRoute,
-  TarjetasAddRoute: TarjetasAddRoute,
-  TarjetasEditRoute: TarjetasEditRoute,
-  TarjetasIndexRoute: TarjetasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

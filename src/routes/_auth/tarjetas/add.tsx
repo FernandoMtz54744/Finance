@@ -5,7 +5,7 @@ import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export const Route = createFileRoute('/tarjetas/add')({
+export const Route = createFileRoute('/_auth/tarjetas/add')({
   component: RouteComponent,
 })
 

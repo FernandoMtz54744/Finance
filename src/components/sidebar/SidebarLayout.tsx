@@ -1,5 +1,5 @@
 import * as React from "react"
-import { PiggyBank, CreditCard, Banknote, CircleDollarSign, DiamondPercent, CircleUserRound  } from "lucide-react"
+import { PiggyBank, CreditCard, Banknote, CircleDollarSign, DiamondPercent  } from "lucide-react"
 import { Link, useRouterState } from "@tanstack/react-router"
 import {
   Sidebar,
@@ -11,7 +11,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { SidebarUser } from "./SidebarUser"
@@ -28,7 +27,7 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
   const sidebar = useSidebar();
   const { location } = useRouterState()
   const currentPath = location.pathname
-  const user = {name: "Fernando", email: "fer_f@outlook.com", avatar: ""}
+
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
@@ -64,7 +63,7 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter >
-        <SidebarUser user={user}></SidebarUser>
+        <SidebarUser></SidebarUser>
       </SidebarFooter>
     </Sidebar>
   )

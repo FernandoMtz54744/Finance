@@ -1,4 +1,6 @@
-import type { authSchema } from "@/validations/authSchema";
+import type { loginSchema, registerSchema } from "@/validations/authSchema";
 import { z } from "zod"
 
-export type AuthFormType = z.infer<typeof authSchema>;
+export type LoginFormType = z.infer<typeof loginSchema>;
+
+export type RegisterFormType = z.infer<typeof registerSchema>;

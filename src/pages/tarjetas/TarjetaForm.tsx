@@ -24,7 +24,7 @@ export default function TarjetaForm({tarjeta, onSubmit}: Props): JSX.Element {
     const navigate = useNavigate()
     const { register, handleSubmit, setValue, watch, control, formState:{errors} } = useForm<TarjetaFormType>({
         resolver: zodResolver(tarjetaSchema),
-        values: {
+        defaultValues: {
             nombre: tarjeta?.nombre ?? "",
             color: tarjeta?.color ?? "#FFFFFF",
             correo: tarjeta?.correo ?? "",

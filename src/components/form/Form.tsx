@@ -13,7 +13,7 @@ type props = {
 
 export function Form({title, description, icon: Icon, onSubmit, children, className, ...props}: props) {
   return (
-    <Card className="mx-6 w-screen md:w-4xl self-center mt-5">
+    <Card className="mx-6 max-w-full md:w-4xl self-center mt-5">
       <CardHeader className="flex flex-col items-center">
         <CardTitle className="text-xl flex flex-row gap-x-2">
           {Icon && <Icon className="w-8 h-8"/>}
