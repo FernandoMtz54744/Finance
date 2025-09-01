@@ -22,7 +22,7 @@ export default function TarjetaList({tarjetas}: Props) {
                     </ContextMenuTrigger>
                     <ContextMenuContent>
                         <ContextMenuItem className="hover:cursor-pointer"
-                            onClick={() => router.navigate({ to: "/tarjetas/edit", search:{tarjeta: tarjeta}, mask: { to: "/tarjetas/edit"} })}>
+                            onClick={() => router.navigate({ to: "/tarjetas/edit", search:{tarjeta: tarjeta}, mask:{ to: "/tarjetas/edit"} })}>
                             Editar
                         </ContextMenuItem>
                     </ContextMenuContent>

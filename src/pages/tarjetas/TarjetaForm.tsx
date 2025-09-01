@@ -79,8 +79,8 @@ export default function TarjetaForm({tarjeta, onSubmit}: Props): JSX.Element {
             </div>
 
             <div className="flex flex-col gap-y-4 mt-8">
-                <Button type="submit" className="w-full">Agregar</Button>
-                <Button onClick={()=>back()} variant="outline" className="w-full">Cancelar</Button>
+                <Button type="submit" className="w-full hover:cursor-pointer">Guardar</Button>
+                <Button onClick={()=>back()} variant="outline" className="w-full hover:cursor-pointer">Cancelar</Button>
             </div>
         </Form>
     )

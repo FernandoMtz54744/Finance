@@ -1,39 +1,36 @@
-import { supabase } from '@/lib/supabaseClient'
+import LoadingPage from '@/pages/layouts/LoadingPage'
 import TarjetaForm from '@/pages/tarjetas/TarjetaForm'
+import { insertTarjeta } from '@/services/tarjetaService'
 import type { TarjetaFormType } from '@/types/tarjeta'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 export const Route = createFileRoute('/_auth/tarjetas/add')({
   component: RouteComponent,
 })
 
-function RouteComponent() {
+function RouteComponent(){
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const addTarjeta = async (tarjeta: TarjetaFormType)=>{
-    try{
-      setLoading(true);
-      const { error } = await supabase.from('tarjetas').insert([tarjeta]);
-      if(error){
-        throw error
-      }
+  const mutation = useMutation({
+    mutationFn: insertTarjeta,
+    onSuccess: () => {
       toast.success("Se agregó la tarjeta con éxito");
-      router.navigate({to: "/tarjetas"});
-    }catch(error){
-      console.log(error);
-      toast.error("No se agregó la tarjeta")
-    }finally{
-      setLoading(false);
-    }
-    
+      queryClient.invalidateQueries({ queryKey: ['tarjetas'] });
+      router.navigate({ to: "/tarjetas" });
+    },
+    onError: (e) => {
+      toast.error("No se agregó la tarjeta");
+      console.log(e.message);
+    },
+  });
+
+  if(mutation.isPending){
+    return <LoadingPage/>
   }
 
-  if(loading){
-    return <div>Loading...</div>
-  }
-  return <TarjetaForm onSubmit={addTarjeta}/>
+  return <TarjetaForm onSubmit={(tarjeta: TarjetaFormType) => mutation.mutate(tarjeta)}/>
 }

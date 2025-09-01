@@ -1,10 +1,10 @@
 import TarjetaList from '@/pages/tarjetas/TarjetaList'
 import { createFileRoute } from '@tanstack/react-router'
 import ErrorPage from '@/pages/layouts/ErrorPage';
-import { getTarjetas } from '@/lib/supabaseClient';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/authStore';
 import LoadingPage from '@/pages/layouts/LoadingPage';
+import { getTarjetas } from '@/services/tarjetaService';
 
 export const Route = createFileRoute('/_auth/tarjetas/')({
   component: RouteComponent,
@@ -19,10 +19,11 @@ function RouteComponent() {
     enabled: !!usuario
   });
 
-  if (!usuario) return <p>No hay usuario autenticado</p>;
-  if (isLoading) return <p>Cargando tarjetas...</p>;
+  if (!usuario) return <ErrorPage error={new Error("Usuario no autenticado")} />;
+  
+  if (isLoading) return <LoadingPage/>;
+
   if (error) return <ErrorPage error={error} />;
   
   return <TarjetaList tarjetas={data ?? []}/>
-  // return <LoadingPage/>
 }

@@ -1,7 +1,7 @@
 import Sidebar from '@/components/sidebar/Sidebar';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthStore } from '@/stores/authStore';
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Toaster } from 'react-hot-toast';
 
 export const Route = createFileRoute('/_auth')({
@@ -12,7 +12,6 @@ export const Route = createFileRoute('/_auth')({
       const { data: { session } } = await supabase.auth.getSession();
       if(session){
         setUser(session.user);
-        console.log("Autenticado");
       }else{
         // throw redirect({ to: '/' })
       }

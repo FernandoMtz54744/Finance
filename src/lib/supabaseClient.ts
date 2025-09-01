@@ -4,9 +4,3 @@ export const supabase = createClient(
     import.meta.env.VITE_SUPABASE_URL,
     import.meta.env.VITE_SUPABASE_ANON_KEY
 )
-
-export const getTarjetas = async (usuario: string) => {
-  const { data, error } = await supabase.from("tarjetas").select("*").eq("usuario", usuario);
-  if (error) throw error;
-  return data;
-}
