@@ -12,14 +12,16 @@ import { FileChartColumn } from "lucide-react"
 import { useEffect } from "react"
 import { Controller, useForm, type SubmitHandler } from "react-hook-form"
 import { DateTime } from "luxon"
+import type { Tarjeta } from "@/types/tarjeta"
 
 
 type Props = {
     periodo?: Periodo,
-    onSubmit: SubmitHandler<PeriodoFormType>
+    onSubmit: SubmitHandler<PeriodoFormType>,
+    tarjeta: Tarjeta
 }
 
-export default function PeriodoForm({periodo, onSubmit}: Props) {
+export default function PeriodoForm({periodo, onSubmit, tarjeta }: Props) {
 
   const navigate = useNavigate()
   const { register, handleSubmit, control, formState:{errors}, watch, setValue } = useForm<PeriodoFormType>({
@@ -35,7 +37,7 @@ export default function PeriodoForm({periodo, onSubmit}: Props) {
   const back = ()=>{
     navigate({
       to: "/periodos/$id",
-      params: { id: "123" }
+      params: { id: tarjeta.id }
     })
   };
 
@@ -49,7 +51,8 @@ export default function PeriodoForm({periodo, onSubmit}: Props) {
   }, [fechaInicio, setValue]);
 
   return (
-    <Form title='Periodo' description="Agrega los datos del periodo" icon={FileChartColumn} onSubmit={handleSubmit(onSubmit)}>
+    <Form title='Periodo' icon={FileChartColumn} onSubmit={handleSubmit(onSubmit)}
+    description={`Periodo de ${tarjeta.nombre}`} >
 
       <div>
         <Label>Nombre</Label>
@@ -85,8 +88,8 @@ export default function PeriodoForm({periodo, onSubmit}: Props) {
       </div>
 
       <div className="flex flex-col gap-y-4 mt-8">
-          <Button type="submit" className="w-full">Agregar</Button>
-          <Button onClick={()=>back()} variant="outline" className="w-full">Cancelar</Button>
+          <Button type="submit" className="w-full hover:cursor-pointer">Agregar</Button>
+          <Button onClick={()=>back()} variant="outline" className="w-full hover:cursor-pointer">Cancelar</Button>
       </div>
     </Form>
   )

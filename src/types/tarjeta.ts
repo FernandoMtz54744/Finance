@@ -11,3 +11,12 @@ export type Tarjeta = {
 }
 
 export type TarjetaFormType = z.infer<typeof tarjetaSchema>;
+
+export type TarjetaConSaldo = Tarjeta & {
+  saldoFinal: number;
+};
+
+export const getTipoDescripcion: Record<'c' | 'd', string> = {
+  c: 'Crédito',
+  d: 'Débito',
+};

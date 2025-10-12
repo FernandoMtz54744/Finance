@@ -2,7 +2,7 @@ import type { periodoSchema } from "@/validations/periodoSchema";
 import { z } from "zod"
 
 export type Periodo = {
-    id: number
+    id: string
     idTarjeta: number,
     nombre: string,
     fechaInicio: Date,

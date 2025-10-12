@@ -19,6 +19,7 @@ import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/ed
 import { Route as AuthTarjetasAddRouteImport } from './routes/_auth/tarjetas/add'
 import { Route as AuthPeriodosAddRouteImport } from './routes/_auth/periodos/add'
 import { Route as AuthPeriodosIdRouteImport } from './routes/_auth/periodos/$id'
+import { Route as AuthMovimientosIdRouteImport } from './routes/_auth/movimientos/$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -69,12 +70,18 @@ const AuthPeriodosIdRoute = AuthPeriodosIdRouteImport.update({
   path: '/periodos/$id',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthMovimientosIdRoute = AuthMovimientosIdRouteImport.update({
+  id: '/movimientos/$id',
+  path: '/movimientos/$id',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/movimientos/$id': typeof AuthMovimientosIdRoute
   '/periodos/$id': typeof AuthPeriodosIdRoute
   '/periodos/add': typeof AuthPeriodosAddRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/movimientos/$id': typeof AuthMovimientosIdRoute
   '/periodos/$id': typeof AuthPeriodosIdRoute
   '/periodos/add': typeof AuthPeriodosAddRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_auth/movimientos/$id': typeof AuthMovimientosIdRoute
   '/_auth/periodos/$id': typeof AuthPeriodosIdRoute
   '/_auth/periodos/add': typeof AuthPeriodosAddRoute
   '/_auth/tarjetas/add': typeof AuthTarjetasAddRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/movimientos/$id'
     | '/periodos/$id'
     | '/periodos/add'
     | '/tarjetas/add'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/movimientos/$id'
     | '/periodos/$id'
     | '/periodos/add'
     | '/tarjetas/add'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/_auth/movimientos/$id'
     | '/_auth/periodos/$id'
     | '/_auth/periodos/add'
     | '/_auth/tarjetas/add'
@@ -222,10 +234,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPeriodosIdRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/movimientos/$id': {
+      id: '/_auth/movimientos/$id'
+      path: '/movimientos/$id'
+      fullPath: '/movimientos/$id'
+      preLoaderRoute: typeof AuthMovimientosIdRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
 interface AuthRouteRouteChildren {
+  AuthMovimientosIdRoute: typeof AuthMovimientosIdRoute
   AuthPeriodosIdRoute: typeof AuthPeriodosIdRoute
   AuthPeriodosAddRoute: typeof AuthPeriodosAddRoute
   AuthTarjetasAddRoute: typeof AuthTarjetasAddRoute
@@ -234,6 +254,7 @@ interface AuthRouteRouteChildren {
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthMovimientosIdRoute: AuthMovimientosIdRoute,
   AuthPeriodosIdRoute: AuthPeriodosIdRoute,
   AuthPeriodosAddRoute: AuthPeriodosAddRoute,
   AuthTarjetasAddRoute: AuthTarjetasAddRoute,

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { User } from '@supabase/supabase-js';
 
 type AuthState = {
-  user: User | null;
+  user: User | null,
   setUser: (user: User | null) => void;
 };
 

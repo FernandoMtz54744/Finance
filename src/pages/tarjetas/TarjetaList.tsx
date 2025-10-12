@@ -1,4 +1,4 @@
-import type { Tarjeta } from "@/types/tarjeta"
+import type { TarjetaConSaldo } from "@/types/tarjeta"
 import TarjetaCard from "./TarjetaCard"
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu"
 import {  useRouter } from "@tanstack/react-router"
@@ -7,7 +7,7 @@ import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Props = {
-    tarjetas: Tarjeta[]
+    tarjetas: TarjetaConSaldo[]
 }
 
 export default function TarjetaList({tarjetas}: Props) {

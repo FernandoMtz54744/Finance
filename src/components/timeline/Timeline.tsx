@@ -1,7 +1,5 @@
-import TimelineItem from "./TimelineItem"
-
 type Props = {
-  children: React.ReactElement<typeof TimelineItem> | React.ReactElement<typeof TimelineItem>[]
+  children: React.ReactNode
 }
 
 export default function Timeline({children} : Props) {
