@@ -1,10 +1,10 @@
 import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte } from "@/lib/utils";
 import { useTarjetaStore } from "@/stores/tarjetaStore";
-import type { Tarjeta, TarjetaConSaldo } from "@/types/tarjeta"
+import type { Tarjeta } from "@/types/tarjeta"
 import { useRouter } from "@tanstack/react-router";
 
 type Props = {
-    tarjeta: TarjetaConSaldo
+    tarjeta: Tarjeta
 };
 
 const tiposTarjeta = {
@@ -46,7 +46,7 @@ export default function TarjetaCard({tarjeta}: Props) {
 
       <div className="flex flex-col items-end">
         <div className="text-xs">Saldo final:</div>
-        <div>{formatMXN(tarjeta.saldoFinal)}</div>
+        <div>{formatMXN(tarjeta.ultimoPeriodo?.saldoFinal ?? 0)}</div>
       </div>
 
     </div>

@@ -1,5 +1,6 @@
 import type { tarjetaSchema } from "@/validations/tarjetaSchema";
 import { z } from "zod"
+import type { Periodo } from "./periodo";
 
 export type Tarjeta = {
     id: string
@@ -7,14 +8,11 @@ export type Tarjeta = {
     tipo: 'c' | 'd',
     diaCorte: number,
     correo: string,
-    color: string
+    color: string,
+    ultimoPeriodo?: Periodo
 }
 
 export type TarjetaFormType = z.infer<typeof tarjetaSchema>;
-
-export type TarjetaConSaldo = Tarjeta & {
-  saldoFinal: number;
-};
 
 export const getTipoDescripcion: Record<'c' | 'd', string> = {
   c: 'Crédito',

@@ -4,7 +4,7 @@ import ErrorPage from '@/pages/layouts/ErrorPage';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/authStore';
 import LoadingPage from '@/pages/layouts/LoadingPage';
-import { getTarjetasConSaldo } from '@/services/tarjetaService';
+import { getTarjetasConUltimoPeriodo } from '@/services/tarjetaService';
 
 export const Route = createFileRoute('/_auth/tarjetas/')({
   component: RouteComponent,
@@ -15,7 +15,7 @@ function RouteComponent() {
   const usuario = useAuthStore((state) => state.user);
   const { data, isLoading, error } = useQuery({
     queryKey: ['tarjetas'],
-    queryFn: ()=> getTarjetasConSaldo(usuario!.id),
+    queryFn: ()=> getTarjetasConUltimoPeriodo(usuario!.id),
     enabled: !!usuario
   });
 
