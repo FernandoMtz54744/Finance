@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_auth')({
       if(session){
         setUser(session.user);
       }else{
-        // throw redirect({ to: '/' })
+        throw redirect({ to: '/' })
       }
     }else{
       console.log("Autenticado desde contexto");
