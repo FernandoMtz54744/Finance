@@ -1,12 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
 import type { TarjetaFormType } from "@/types/tarjeta";
 
-export const getAllTarjetas = async () => {
-  const { data, error } = await supabase.from("tarjetas").select("*");
-  if (error) throw error;
-  return data;
-}
-
 export const getTarjetas = async (usuario: string) => {
   const { data, error } = await supabase.from("tarjetas").select("*").eq("usuario", usuario);
   if (error) throw error;
