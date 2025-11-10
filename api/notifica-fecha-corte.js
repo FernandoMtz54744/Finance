@@ -1,14 +1,13 @@
-import { getAllTarjetas } from "../src/services/ApiVercelService.ts";
-import { getTipoDescripcion, Tarjeta } from "../src/types/tarjeta.ts";
-import { enviarEmail } from "../src/lib/emailUtils.ts";
+import { getAllTarjetas } from "../src/services/ApiVercelService.js";
+import { enviarEmail } from "../src/lib/emailUtils.js";
 import { DateTime } from 'luxon';
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
     if (req.method !== 'GET') 
         if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' });
 
     try{
-        const tarjetas: Tarjeta[] = await getAllTarjetas();
+        const tarjetas = await getAllTarjetas();
         const ayer = DateTime.now().minus({day: 1});
 
         const tarjetasNotificar = tarjetas.filter(tarjeta => tarjeta.diaCorte === ayer.day);
@@ -25,3 +24,8 @@ export default async function handler(req: any, res: any) {
     }
 
 }
+
+export const getTipoDescripcion = {
+  c: 'Crédito',
+  d: 'Débito',
+};

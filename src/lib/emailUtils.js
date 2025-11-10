@@ -1,6 +1,6 @@
 import emailjs from "@emailjs/nodejs"
 
-export async function enviarEmail(destinatario: string, mensaje: string){
+export async function enviarEmail(destinatario, mensaje){
     try{
         await emailjs.send("service_educdoa", "template_qemfv7h",{
             mensaje: mensaje,
