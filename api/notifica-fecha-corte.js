@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
 }
 
-export const getTipoDescripcion = {
+const getTipoDescripcion = {
   c: 'Crédito',
   d: 'Débito',
 };

@@ -12,3 +12,10 @@ export const getAllTarjetas = async () => {
   if (error) throw error;
   return data;
 }
+
+export const getPeriodoByFechaCorte = async (idTarjeta, fechaCorte) => {
+  const fecha = fechaCorte.toISOString().split('T')[0];
+  const { data, error } = await supabase.from("periodos").select("*").eq("idTarjeta", idTarjeta).eq("fechaCorte", fecha).maybeSingle();
+  if (error) throw error;
+  return data;
+}
