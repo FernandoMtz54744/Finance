@@ -1,5 +1,5 @@
 import { ChevronsUpDown, LogOut, User as UserIcon } from "lucide-react"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -30,7 +30,8 @@ export function SidebarUser() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ">
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-lg hover:cursor-pointer">
+                <AvatarImage src={user?.user_metadata.picture} alt="avatar" />
                 <AvatarFallback className="rounded-lg"><UserIcon className="size-4 rounded-lg"/></AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -49,6 +50,7 @@ export function SidebarUser() {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={user?.user_metadata.picture} alt="avatar"/>
                     <AvatarFallback className="rounded-lg"><UserIcon className="size-4"/></AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
@@ -58,8 +60,8 @@ export function SidebarUser() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={logOut}>
-                <LogOut /> Log out
+              <DropdownMenuItem onSelect={logOut} className="hover:cursor-pointer">
+                <LogOut/> Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

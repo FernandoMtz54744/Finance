@@ -14,17 +14,29 @@ function RouteComponent() {
   const [error, setError] = useState<AuthError>();
 
   const login = async (authData: LoginFormType)=>{
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: authData.correo,
       password: authData.password 
     });
 
     if(error){
       setError(error);      
-    }else{
-      console.log(data);
     }
   }
 
-  return <LoginForm onSubmit={login} error={error}/>
+  const loginGoogle = async(event: any)=>{
+    event.preventDefault();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+      redirectTo: "https://etboqhcdkamtatjuzark.supabase.co/auth/v1/callback"
+      }
+    });
+
+    if(error){
+      setError(error);      
+    }
+  }
+
+  return <LoginForm onSubmit={login} error={error} loginGoogle={loginGoogle}/>
 }

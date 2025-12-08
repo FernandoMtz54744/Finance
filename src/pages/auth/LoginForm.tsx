@@ -13,10 +13,11 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   onSubmit: SubmitHandler<LoginFormType>,
+  loginGoogle: (event: any)=>void,
   error?: AuthError
 }
 
-export default function LoginForm({onSubmit, error}: Props) {
+export default function LoginForm({onSubmit, error, loginGoogle}: Props) {
   const navigate = useNavigate();
   const { register, handleSubmit, formState:{errors} } = useForm<LoginFormType>({
           resolver: zodResolver(loginSchema),
@@ -44,8 +45,9 @@ export default function LoginForm({onSubmit, error}: Props) {
 
         <div className="flex flex-col gap-y-4 mt-8">
             <Button type="submit" className="hover:cursor-pointer">Login</Button>
+            <Button type="submit" onClick={(e)=>loginGoogle(e)} 
+              className="bg-blue-600 hover:bg-blue-700 text-gray-200 hover:cursor-pointer">Sign In With Google</Button>
             <Button type="button" onClick={()=> navigate({to: "/"})} variant="destructive" className="hover:cursor-pointer">Regresar</Button>
-            
             <p className="text-right">
               ¿No tienes una cuenta?&nbsp;
               <span onClick={()=>navigate({to:"/register"})} className="text-emerald-400 hover:cursor-pointer">Regístrate</span>
