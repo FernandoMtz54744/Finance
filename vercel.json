@@ -2,5 +2,14 @@
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
+  "routes": [{
+      "src": "/api/.*",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/[^.]+", 
+      "dest": "/", 
+      "status": 200
+    }
+  ]
 }
