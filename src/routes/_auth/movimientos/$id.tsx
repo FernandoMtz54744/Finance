@@ -8,7 +8,7 @@ import { getPeriodo, updateFile } from '@/services/periodoService';
 import { usePeriodoStore } from '@/stores/periodoStore';
 import { useTarjetaStore } from '@/stores/tarjetaStore';
 import { getTipoDescripcion } from '@/types/tarjeta';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { Eye, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -65,8 +65,7 @@ function RouteComponent() {
       });
       const data = await response.json();
       if(data.link){
-        updateFile(data.link, periodo.id);
-        const [nuevoPeriodo] = await getPeriodo(periodo.id);
+        const nuevoPeriodo = await updateFile(data.link, id);
         setPeriodo(nuevoPeriodo);
         toast.success("Documento actualizado");
       }else{

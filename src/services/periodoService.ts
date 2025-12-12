@@ -20,7 +20,7 @@ export const insertPeriodo = async ({periodo, idTarjeta}: {periodo: PeriodoFormT
 }
 
 export const updateFile = async (link: string, idPeriodo: string) =>{
-  const { data, error } = await supabase.from("periodos").update({ documento: link }).eq("id", idPeriodo);
+  const { data, error } = await supabase.from("periodos").update({ documento: link }).eq("id", idPeriodo).select().single();
   if(error) throw error;
   return data;
 }
