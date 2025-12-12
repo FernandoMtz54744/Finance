@@ -10,7 +10,8 @@ import { useTarjetaStore } from '@/stores/tarjetaStore';
 import { getTipoDescripcion } from '@/types/tarjeta';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useState } from 'react';
+import { Eye, FileUp } from 'lucide-react';
+import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export const Route = createFileRoute('/_auth/movimientos/$id')({
@@ -26,6 +27,7 @@ function RouteComponent() {
   const tarjeta = useTarjetaStore((state) => state.tarjeta);
 
   const [isLoadingFile, setIsLoadingFile] = useState(false); 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   if(!periodo || !tarjeta){
     router.navigate({to: "/tarjetas"})
@@ -45,7 +47,10 @@ function RouteComponent() {
     try{
       setIsLoadingFile(true);
       const file = e.target.files?.[0];
-      if (!file) return;
+      if (!file){
+        setIsLoadingFile(false);
+        return;
+      };
       const arrayBuffer = await file.arrayBuffer();
       const bytes = Array.from(new Uint8Array(arrayBuffer));
       const fileName = `${tarjeta.nombre} ${getTipoDescripcion[tarjeta.tipo]} - ${periodo.nombre}`;
@@ -59,7 +64,7 @@ function RouteComponent() {
         })
       });
       const data = await response.json();
-      if(response.ok){
+      if(data.link){
         updateFile(data.link, periodo.id);
         const [nuevoPeriodo] = await getPeriodo(periodo.id);
         setPeriodo(nuevoPeriodo);
@@ -78,6 +83,14 @@ function RouteComponent() {
   return <>
     <MovimientosHeader periodo={periodo} tarjeta={tarjeta} movimientos={movimientos ?? []}/>
     <MovimientosForm idPeriodo={id}/>
-    <MovimientosList movimientos={movimientos ?? []} subirEstadoCuenta={subirEstadoCuenta} periodo={periodo}/>
+    <MovimientosList movimientos={movimientos ?? []}/>
+    {periodo.documento ? 
+      <Eye className="fixed right-6 bottom-6 hover:cursor-pointer size-8" onClick={()=> window.open(periodo.documento, "_blank")}/>
+      :  
+      <>
+      <FileUp className="fixed right-6 bottom-6 hover:cursor-pointer size-8" onClick={()=>fileInputRef.current?.click()}></FileUp>
+      <input ref={fileInputRef} type="file" hidden onChange={subirEstadoCuenta} accept=".pdf"/>
+      </>
+    }
     </>  
 }
