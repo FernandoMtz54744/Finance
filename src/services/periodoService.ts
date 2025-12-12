@@ -7,8 +7,20 @@ export const getPeriodos = async (idTarjeta: string) => {
   return data;
 }
 
-export const insertPeriodo = async ({periodo, idTarjeta}: {periodo: PeriodoFormType, idTarjeta: string}) =>{
+export const getPeriodo = async (idPeriodo: string) => {
+  const { data, error } = await supabase.from("periodos").select("*").eq("id", idPeriodo);
+  if (error) throw error;
+  return data;
+}
+
+export const insertPeriodo = async ({periodo, idTarjeta}: {periodo: PeriodoFormType, idTarjeta: string}) => {
     const {data, error } = await supabase.from('periodos').insert([{...periodo, idTarjeta: idTarjeta, }]);
     if(error) throw error;
     return data;
+}
+
+export const updateFile = async (link: string, idPeriodo: string) =>{
+  const { data, error } = await supabase.from("periodos").update({ documento: link }).eq("id", idPeriodo);
+  if(error) throw error;
+  return data;
 }
