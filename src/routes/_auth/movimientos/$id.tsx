@@ -4,15 +4,17 @@ import MovimientosForm from '@/pages/movimientos/MovimientosForm'
 import MovimientosHeader from '@/pages/movimientos/MovimientosHeader';
 import MovimientosList from '@/pages/movimientos/MovimientosList'
 import { getMovimientos } from '@/services/movimientoService';
-import { getPeriodo, updateFile } from '@/services/periodoService';
+import { markAsValid, updateFile } from '@/services/periodoService';
 import { usePeriodoStore } from '@/stores/periodoStore';
 import { useTarjetaStore } from '@/stores/tarjetaStore';
 import { getTipoDescripcion } from '@/types/tarjeta';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { Eye, FileUp } from 'lucide-react';
+import { CircleCheck, Eye, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
 
 export const Route = createFileRoute('/_auth/movimientos/$id')({
   component: RouteComponent,
@@ -79,10 +81,27 @@ function RouteComponent() {
     }
   }
 
+  const validarPeriodo = async ()=>{
+    try{
+      const nuevoPeriodo = await markAsValid(id);
+      setPeriodo(nuevoPeriodo);
+      toast.success("Periodo marcado como válido");
+    }catch(e){
+      toast.success("No se pudo validar el periodo");
+      console.log(e);
+    }
+  }
+
   return <>
     <MovimientosHeader periodo={periodo} tarjeta={tarjeta} movimientos={movimientos ?? []}/>
-    <MovimientosForm idPeriodo={id}/>
+    {!periodo.validado && <MovimientosForm idPeriodo={id}/>}
     <MovimientosList movimientos={movimientos ?? []}/>
+    {!periodo.validado && 
+      <ConfirmDialog title='Validar periodo' confirmText='Aceptar' cancelText='Cancelar' confirmAction={validarPeriodo}
+        description='¿Deseas marcar este periodo como válido?'>
+        <CircleCheck className="fixed right-6 bottom-18 hover:cursor-pointer size-8"></CircleCheck>
+      </ConfirmDialog>
+    }
     {periodo.documento ? 
       <Eye className="fixed right-6 bottom-6 hover:cursor-pointer size-8" onClick={()=> window.open(periodo.documento, "_blank")}/>
       :  

@@ -24,3 +24,9 @@ export const updateFile = async (link: string, idPeriodo: string) =>{
   if(error) throw error;
   return data;
 }
+
+export const markAsValid = async (idPeriodo: string) =>{
+  const { data, error } = await supabase.from("periodos").update({ validado: true }).eq("id", idPeriodo).select().single();
+  if(error) throw error;
+  return data;
+}
