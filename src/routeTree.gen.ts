@@ -15,6 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthTarjetasIndexRouteImport } from './routes/_auth/tarjetas/index'
+import { Route as AuthEfectivoIndexRouteImport } from './routes/_auth/efectivo/index'
 import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/edit'
 import { Route as AuthTarjetasAddRouteImport } from './routes/_auth/tarjetas/add'
 import { Route as AuthPeriodosAddRouteImport } from './routes/_auth/periodos/add'
@@ -48,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthTarjetasIndexRoute = AuthTarjetasIndexRouteImport.update({
   id: '/tarjetas/',
   path: '/tarjetas/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthEfectivoIndexRoute = AuthEfectivoIndexRouteImport.update({
+  id: '/efectivo/',
+  path: '/efectivo/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthTarjetasEditRoute = AuthTarjetasEditRouteImport.update({
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/periodos/add': typeof AuthPeriodosAddRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/efectivo': typeof AuthEfectivoIndexRoute
   '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/periodos/add': typeof AuthPeriodosAddRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/efectivo': typeof AuthEfectivoIndexRoute
   '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesById {
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_auth/periodos/add': typeof AuthPeriodosAddRoute
   '/_auth/tarjetas/add': typeof AuthTarjetasAddRoute
   '/_auth/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/_auth/efectivo/': typeof AuthEfectivoIndexRoute
   '/_auth/tarjetas/': typeof AuthTarjetasIndexRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/periodos/add'
     | '/tarjetas/add'
     | '/tarjetas/edit'
+    | '/efectivo'
     | '/tarjetas'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/periodos/add'
     | '/tarjetas/add'
     | '/tarjetas/edit'
+    | '/efectivo'
     | '/tarjetas'
   id:
     | '__root__'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_auth/periodos/add'
     | '/_auth/tarjetas/add'
     | '/_auth/tarjetas/edit'
+    | '/_auth/efectivo/'
     | '/_auth/tarjetas/'
   fileRoutesById: FileRoutesById
 }
@@ -206,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTarjetasIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/efectivo/': {
+      id: '/_auth/efectivo/'
+      path: '/efectivo'
+      fullPath: '/efectivo'
+      preLoaderRoute: typeof AuthEfectivoIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/tarjetas/edit': {
       id: '/_auth/tarjetas/edit'
       path: '/tarjetas/edit'
@@ -250,6 +269,7 @@ interface AuthRouteRouteChildren {
   AuthPeriodosAddRoute: typeof AuthPeriodosAddRoute
   AuthTarjetasAddRoute: typeof AuthTarjetasAddRoute
   AuthTarjetasEditRoute: typeof AuthTarjetasEditRoute
+  AuthEfectivoIndexRoute: typeof AuthEfectivoIndexRoute
   AuthTarjetasIndexRoute: typeof AuthTarjetasIndexRoute
 }
 
@@ -259,6 +279,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthPeriodosAddRoute: AuthPeriodosAddRoute,
   AuthTarjetasAddRoute: AuthTarjetasAddRoute,
   AuthTarjetasEditRoute: AuthTarjetasEditRoute,
+  AuthEfectivoIndexRoute: AuthEfectivoIndexRoute,
   AuthTarjetasIndexRoute: AuthTarjetasIndexRoute,
 }
 
