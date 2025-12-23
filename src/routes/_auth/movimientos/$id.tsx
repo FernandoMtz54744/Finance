@@ -94,7 +94,7 @@ function RouteComponent() {
 
   return <>
     <MovimientosHeader periodo={periodo} tarjeta={tarjeta} movimientos={movimientos ?? []}/>
-    {!periodo.validado && <MovimientosForm idPeriodo={id}/>}
+    {!periodo.validado && <MovimientosForm idPeriodo={id} periodo={periodo} tarjeta={tarjeta}/>}
     <MovimientosList movimientos={movimientos ?? []}/>
     {!periodo.validado && 
       <ConfirmDialog title='Validar periodo' confirmText='Aceptar' cancelText='Cancelar' confirmAction={validarPeriodo}

@@ -3,8 +3,11 @@ import FormError from "@/components/form/FormError";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getFechaLimitePago } from "@/lib/utils";
 import { insertMovimiento } from "@/services/movimientoService";
-import type { Movimiento, MovimientoFormType } from "@/types/movimiento";
+import type { MovimientoFormType } from "@/types/movimiento";
+import type { Periodo } from "@/types/periodo";
+import type { Tarjeta } from "@/types/tarjeta";
 import { movimientoSchema } from "@/validations/movimientoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,12 +16,15 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 type Props = {
-  idPeriodo: string
+  idPeriodo: string,
+  periodo: Periodo,
+  tarjeta: Tarjeta
 }
 
-export default function MovimientosForm({idPeriodo}: Props) {
+export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
 
   const queryClient = useQueryClient();
+  
 
   const { register, handleSubmit, control, formState:{errors}, watch, setValue, reset } = useForm<MovimientoFormType>({
       resolver: zodResolver(movimientoSchema),
@@ -26,10 +32,7 @@ export default function MovimientosForm({idPeriodo}: Props) {
 
   const mutation = useMutation({
     mutationFn: insertMovimiento,
-    onSuccess: (nuevoMovimiento) => {
-      queryClient.setQueryData<Movimiento[]>(['movimientos', idPeriodo], (old) =>
-        old ? [...old, nuevoMovimiento] : [nuevoMovimiento]
-      );
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movimientos', idPeriodo] });
       reset();
     },
@@ -68,7 +71,8 @@ export default function MovimientosForm({idPeriodo}: Props) {
       <form className="grid grid-cols-12 md:gap-x-8 gap-y-4 my-4 mx-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="col-span-12 md:col-span-2">
           <Controller name="fecha" control={control} render={({ field }) => (
-            <DatePicker {...field} placeholder="Fecha"/>
+            <DatePicker {...field} placeholder="Fecha" minDate={periodo.fechaInicio} 
+            maxDate={ tarjeta.tipo === "d" ? periodo.fechaCorte : getFechaLimitePago(periodo.fechaCorte)}/>
           )}/>
           <FormError error={errors.fecha}></FormError>
         </div>

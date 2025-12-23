@@ -9,10 +9,13 @@ import { es } from "date-fns/locale"
 type DatePickerProps = {
   value?: Date
   onChange?: (date: Date | undefined) => void
-  placeholder?: string
+  placeholder?: string,
+  minDate?: Date,
+  maxDate?: Date,
+  defaultDate?: Date
 }
 
-export function DatePicker({ value, onChange, placeholder }: DatePickerProps) {
+export function DatePicker({ value, onChange, placeholder, minDate, maxDate, defaultDate }: DatePickerProps) {
     return (
     <Popover>
         <PopoverTrigger asChild>
@@ -22,7 +25,10 @@ export function DatePicker({ value, onChange, placeholder }: DatePickerProps) {
             </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
-            <Calendar mode="single" selected={value} onSelect={onChange} locale={es} autoFocus/>
+            <Calendar mode="single" selected={value} onSelect={onChange} locale={es} autoFocus 
+                disabled={(date) => (minDate ? date < minDate : false) || (maxDate ? date > maxDate : false)}
+                hidden={[...(minDate ? [{ before: minDate }] : []), ...(maxDate ? [{ after: maxDate }] : [])]} 
+                defaultMonth={value ?? defaultDate ?? minDate} />
         </PopoverContent>
     </Popover>
 )}

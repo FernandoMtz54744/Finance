@@ -16,3 +16,10 @@ export const insertMovimiento = async ({movimiento, idPeriodo}: {movimiento: Mov
     if(error) throw error;
     return data;
 }
+
+export const deleteMovimiento = async (id: number) =>{
+  const { data, error } = await supabase.from('movimientos').delete().eq('id', id);
+  if(error) throw error;
+  return data;
+
+}
