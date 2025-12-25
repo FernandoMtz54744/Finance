@@ -4,7 +4,7 @@ import { z } from "zod"
 export type Movimiento = {
     id: number,
     idPeriodo: number,
-    fecha: Date,
+    fecha: string,
     cantidad: number,
     motivo: string,
     tipo: 'a' | 'c' | 'r' //[Abono, Cargo, Rendimiento]
