@@ -31,7 +31,7 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
   return (
     <>
     <div className="text-center text-2xl font-medium my-2">{title}</div>
-    {movimientos.map((movimiento, i) => (
+    {movimientos.sort((a,b) => IsoToDate(a.fecha).getTime() - IsoToDate(b.fecha).getTime()).map((movimiento, i) => (
         <div className="flex flex-row justify-between items-center border-b-2 border-b-gray-850 px-4 py-2" key={i}>
             <div>{dateToString(IsoToDate(movimiento.fecha))}</div>
             <div className="text-left w-full pl-4">{movimiento.motivo}</div>

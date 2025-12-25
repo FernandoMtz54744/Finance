@@ -14,7 +14,7 @@ export const getPeriodo = async (idPeriodo: string) => {
 }
 
 export const insertPeriodo = async ({periodo, idTarjeta}: {periodo: PeriodoFormType, idTarjeta: string}) => {
-    const {data, error } = await supabase.from('periodos').insert([{...periodo, idTarjeta: idTarjeta, }]);
+    const {data, error } = await supabase.from('periodos').insert([{...periodo, idTarjeta: idTarjeta, saldoFinal: periodo.saldoInicial}]);
     if(error) throw error;
     return data;
 }

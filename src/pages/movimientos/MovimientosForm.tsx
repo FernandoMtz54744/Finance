@@ -68,7 +68,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
 
   return (
     <div>
-      <form className="grid grid-cols-12 md:gap-x-8 gap-y-4 my-4 mx-8" onSubmit={handleSubmit(onSubmit)}>
+      <form className="grid grid-cols-12 md:gap-x-8 gap-y-4 my-4 mx-8" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <div className="col-span-12 md:col-span-2">
           <Controller name="fecha" control={control} render={({ field }) => (
             <DatePicker {...field} placeholder="Fecha" minDate={IsoToDate(periodo.fechaInicio)} 

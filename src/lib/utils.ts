@@ -10,7 +10,7 @@ export function dateToString(fecha: Date){
   return DateTime.fromJSDate(fecha).toFormat("dd/LLL/yyyy");
 } 
 
-export function IsoToDate(fecha: string){
+export function IsoToDate(fecha: string): Date{
   return DateTime.fromISO(fecha).toJSDate()
 }
 

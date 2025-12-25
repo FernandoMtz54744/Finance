@@ -28,7 +28,7 @@ export default function PeriodoList({ periodos }: Props) {
     return (<>
     <div className="text-center text-2xl font-medium">{tarjeta?.nombre} - {tarjeta?.tipo && getTipoDescripcion[tarjeta?.tipo]}</div>
     <Timeline>
-        {periodos.map((periodo, i) => (
+        {periodos.sort((a,b) => IsoToDate(b.fechaInicio).getTime() - IsoToDate(a.fechaInicio).getTime()).map((periodo, i) => (
             <ContextMenu>
                 <ContextMenuTrigger>
                     <TimelineItem title={periodo.nombre} key={i} onClick={()=>handleClick(periodo)} className="hover:cursor-pointer">
