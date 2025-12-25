@@ -3,7 +3,7 @@ import FormError from "@/components/form/FormError";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getFechaLimitePago } from "@/lib/utils";
+import { getFechaLimitePago, IsoToDate } from "@/lib/utils";
 import { insertMovimiento } from "@/services/movimientoService";
 import type { MovimientoFormType } from "@/types/movimiento";
 import type { Periodo } from "@/types/periodo";
@@ -71,8 +71,8 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
       <form className="grid grid-cols-12 md:gap-x-8 gap-y-4 my-4 mx-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="col-span-12 md:col-span-2">
           <Controller name="fecha" control={control} render={({ field }) => (
-            <DatePicker {...field} placeholder="Fecha" minDate={periodo.fechaInicio} 
-            maxDate={ tarjeta.tipo === "d" ? periodo.fechaCorte : getFechaLimitePago(periodo.fechaCorte)}/>
+            <DatePicker {...field} placeholder="Fecha" minDate={IsoToDate(periodo.fechaInicio)} 
+            maxDate={ tarjeta.tipo === "d" ? IsoToDate(periodo.fechaCorte) : getFechaLimitePago(IsoToDate(periodo.fechaCorte))}/>
           )}/>
           <FormError error={errors.fecha}></FormError>
         </div>

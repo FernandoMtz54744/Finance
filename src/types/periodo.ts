@@ -5,8 +5,8 @@ export type Periodo = {
     id: string
     idTarjeta: number,
     nombre: string,
-    fechaInicio: Date,
-    fechaCorte: Date,
+    fechaInicio: string,
+    fechaCorte: string,
     saldoInicial: number,
     saldoFinal: number,
     documento: string,

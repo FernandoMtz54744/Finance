@@ -1,4 +1,4 @@
-import { dateToString, formatMXN, getFechaLimitePago } from "@/lib/utils"
+import { dateToString, formatMXN, getFechaLimitePago, IsoToDate } from "@/lib/utils"
 import type { Movimiento } from "@/types/movimiento"
 import type { Periodo } from "@/types/periodo"
 import { getTipoDescripcion, type Tarjeta } from "@/types/tarjeta"
@@ -21,9 +21,9 @@ export default function MovimientosHeader({periodo, tarjeta, movimientos}: Props
     <div className="flex flex-col mx-8">
       <div className="flex flex-col md:flex-row items-center justify-between py-2">
         <div>{tarjeta.nombre} {getTipoDescripcion[tarjeta.tipo]} - {periodo.nombre}</div>
-        <div>Fecha inicio: {dateToString(new Date(periodo.fechaInicio))}</div>
-        <div>Fecha corte: {dateToString(new Date(periodo.fechaCorte))}</div>
-        {tarjeta.tipo==='c' && <div>Fecha Límite de pago: {dateToString(getFechaLimitePago(new Date(periodo.fechaCorte)))}</div>}
+        <div>Fecha inicio: {dateToString(IsoToDate(periodo.fechaInicio))}</div>
+        <div>Fecha corte: {dateToString(IsoToDate(periodo.fechaCorte))}</div>
+        {tarjeta.tipo==='c' && <div>Fecha Límite de pago: {dateToString(getFechaLimitePago(IsoToDate(periodo.fechaCorte)))}</div>}
       </div>
       <div className="flex flex-col md:flex-row items-center justify-around bg-emerald-950 py-1 rounded-md">
         <div>Saldo inicial: {formatMXN(periodo.saldoInicial)}</div>

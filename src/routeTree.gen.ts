@@ -18,6 +18,7 @@ import { Route as AuthTarjetasIndexRouteImport } from './routes/_auth/tarjetas/i
 import { Route as AuthEfectivoIndexRouteImport } from './routes/_auth/efectivo/index'
 import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/edit'
 import { Route as AuthTarjetasAddRouteImport } from './routes/_auth/tarjetas/add'
+import { Route as AuthPeriodosEditRouteImport } from './routes/_auth/periodos/edit'
 import { Route as AuthPeriodosAddRouteImport } from './routes/_auth/periodos/add'
 import { Route as AuthPeriodosIdRouteImport } from './routes/_auth/periodos/$id'
 import { Route as AuthMovimientosIdRouteImport } from './routes/_auth/movimientos/$id'
@@ -66,6 +67,11 @@ const AuthTarjetasAddRoute = AuthTarjetasAddRouteImport.update({
   path: '/tarjetas/add',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthPeriodosEditRoute = AuthPeriodosEditRouteImport.update({
+  id: '/periodos/edit',
+  path: '/periodos/edit',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AuthPeriodosAddRoute = AuthPeriodosAddRouteImport.update({
   id: '/periodos/add',
   path: '/periodos/add',
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/movimientos/$id': typeof AuthMovimientosIdRoute
   '/periodos/$id': typeof AuthPeriodosIdRoute
   '/periodos/add': typeof AuthPeriodosAddRoute
+  '/periodos/edit': typeof AuthPeriodosEditRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
   '/movimientos/$id': typeof AuthMovimientosIdRoute
   '/periodos/$id': typeof AuthPeriodosIdRoute
   '/periodos/add': typeof AuthPeriodosAddRoute
+  '/periodos/edit': typeof AuthPeriodosEditRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   '/_auth/movimientos/$id': typeof AuthMovimientosIdRoute
   '/_auth/periodos/$id': typeof AuthPeriodosIdRoute
   '/_auth/periodos/add': typeof AuthPeriodosAddRoute
+  '/_auth/periodos/edit': typeof AuthPeriodosEditRoute
   '/_auth/tarjetas/add': typeof AuthTarjetasAddRoute
   '/_auth/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/_auth/efectivo/': typeof AuthEfectivoIndexRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/movimientos/$id'
     | '/periodos/$id'
     | '/periodos/add'
+    | '/periodos/edit'
     | '/tarjetas/add'
     | '/tarjetas/edit'
     | '/efectivo'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/movimientos/$id'
     | '/periodos/$id'
     | '/periodos/add'
+    | '/periodos/edit'
     | '/tarjetas/add'
     | '/tarjetas/edit'
     | '/efectivo'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/_auth/movimientos/$id'
     | '/_auth/periodos/$id'
     | '/_auth/periodos/add'
+    | '/_auth/periodos/edit'
     | '/_auth/tarjetas/add'
     | '/_auth/tarjetas/edit'
     | '/_auth/efectivo/'
@@ -239,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTarjetasAddRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/periodos/edit': {
+      id: '/_auth/periodos/edit'
+      path: '/periodos/edit'
+      fullPath: '/periodos/edit'
+      preLoaderRoute: typeof AuthPeriodosEditRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/periodos/add': {
       id: '/_auth/periodos/add'
       path: '/periodos/add'
@@ -267,6 +286,7 @@ interface AuthRouteRouteChildren {
   AuthMovimientosIdRoute: typeof AuthMovimientosIdRoute
   AuthPeriodosIdRoute: typeof AuthPeriodosIdRoute
   AuthPeriodosAddRoute: typeof AuthPeriodosAddRoute
+  AuthPeriodosEditRoute: typeof AuthPeriodosEditRoute
   AuthTarjetasAddRoute: typeof AuthTarjetasAddRoute
   AuthTarjetasEditRoute: typeof AuthTarjetasEditRoute
   AuthEfectivoIndexRoute: typeof AuthEfectivoIndexRoute
@@ -277,6 +297,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthMovimientosIdRoute: AuthMovimientosIdRoute,
   AuthPeriodosIdRoute: AuthPeriodosIdRoute,
   AuthPeriodosAddRoute: AuthPeriodosAddRoute,
+  AuthPeriodosEditRoute: AuthPeriodosEditRoute,
   AuthTarjetasAddRoute: AuthTarjetasAddRoute,
   AuthTarjetasEditRoute: AuthTarjetasEditRoute,
   AuthEfectivoIndexRoute: AuthEfectivoIndexRoute,

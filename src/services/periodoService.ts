@@ -30,3 +30,9 @@ export const markAsValid = async (idPeriodo: string) =>{
   if(error) throw error;
   return data;
 }
+
+export const updatePeriodo = async ({periodo, id}:{periodo: PeriodoFormType, id:string}) =>{
+  const { data, error } = await supabase.from('periodos').update(periodo).eq("id", id);
+  if(error) throw error;
+  return data;
+}

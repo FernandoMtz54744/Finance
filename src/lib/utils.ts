@@ -10,6 +10,10 @@ export function dateToString(fecha: Date){
   return DateTime.fromJSDate(fecha).toFormat("dd/LLL/yyyy");
 } 
 
+export function IsoToDate(fecha: string){
+  return DateTime.fromISO(fecha).toJSDate()
+}
+
 export function getFechaLimitePago(fechaCorte: Date){
   return DateTime.fromJSDate(fechaCorte).plus({days: 20}).toJSDate();
 }

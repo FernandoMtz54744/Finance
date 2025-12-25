@@ -13,6 +13,7 @@ import { useEffect } from "react"
 import { Controller, useForm, type SubmitHandler } from "react-hook-form"
 import { DateTime } from "luxon"
 import type { Tarjeta } from "@/types/tarjeta"
+import { IsoToDate } from "@/lib/utils"
 
 
 type Props = {
@@ -28,8 +29,8 @@ export default function PeriodoForm({periodo, onSubmit, tarjeta }: Props) {
     resolver: zodResolver(periodoSchema),
     defaultValues: {
       nombre: periodo?.nombre ?? "",
-      fechaInicio: periodo?.fechaInicio ?? new Date(),
-      fechaCorte: periodo?.fechaCorte ?? new Date(),
+      fechaInicio: periodo?.fechaInicio ? IsoToDate(periodo.fechaInicio) : new Date(),
+      fechaCorte: periodo?.fechaCorte ?  IsoToDate(periodo.fechaCorte) : new Date(),
       saldoInicial: periodo?.saldoInicial ?? 0 
     }
   });
