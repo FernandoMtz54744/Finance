@@ -31,7 +31,7 @@ export default function PeriodoList({ periodos }: Props) {
         {periodos.sort((a,b) => IsoToDate(b.fechaInicio).getTime() - IsoToDate(a.fechaInicio).getTime()).map((periodo, i) => (
             <ContextMenu>
                 <ContextMenuTrigger>
-                    <TimelineItem title={periodo.nombre} key={i} onClick={()=>handleClick(periodo)} className="hover:cursor-pointer">
+                    <TimelineItem title={periodo.nombre} key={i} validado={periodo.validado} onClick={()=>handleClick(periodo)} className="hover:cursor-pointer">
                         <div className="flex md:flex-row flex-col gap-x-5">
                             <div>Fecha inicio: {dateToString(IsoToDate(periodo.fechaInicio))}</div>
                             <div>Corte: {dateToString(IsoToDate(periodo.fechaCorte))}</div>
