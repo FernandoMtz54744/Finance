@@ -3,7 +3,7 @@ import { deleteMovimiento } from "@/services/movimientoService"
 import { usePeriodoStore } from "@/stores/periodoStore"
 import type { Movimiento } from "@/types/movimiento"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Trash2 } from "lucide-react"
+import { BanknoteArrowUp, Trash2 } from "lucide-react"
 import ErrorPage from "../layouts/ErrorPage"
 
 type Props = {
@@ -34,9 +34,12 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
     {movimientos.sort((a,b) => IsoToDate(a.fecha).getTime() - IsoToDate(b.fecha).getTime()).map((movimiento, i) => (
         <div className="flex flex-row justify-between items-center border-b-2 border-b-gray-850 px-4 py-2" key={i}>
             <div>{dateToString(IsoToDate(movimiento.fecha))}</div>
-            <div className="text-left w-full pl-4">{movimiento.motivo}</div>
+            <div className="text-left w-full pl-4 flex flex-row">
+              {movimiento.motivo}
+              {movimiento.tipo === "r" && <BanknoteArrowUp className="text-emerald-400 ml-2"/>}
+            </div>
             <div>{formatMXN(movimiento.cantidad)}</div>
-            <Trash2 className="ml-2 hover:cursor-pointer hover:text-red-500" onClick={()=>deleteMovimientos.mutate(movimiento.id)}></Trash2>
+            {!periodo.validado && <Trash2 className="ml-2 hover:cursor-pointer hover:text-red-500" onClick={()=>deleteMovimientos.mutate(movimiento.id)}/>}
         </div>
     ))}
     <div className={cn("flex flex-row justify-between mt-8 rounded-md py-2 px-4", bgColor)}>
