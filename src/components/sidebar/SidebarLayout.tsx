@@ -28,6 +28,11 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
   const { location } = useRouterState()
   const currentPath = location.pathname
 
+  const closeSidebar = ()=>{
+    sidebar.setOpen(false);
+    sidebar.setOpenMobile(false);
+  }
+
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
@@ -52,7 +57,7 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild className={item.url === currentPath ? "bg-muted font-semibold" : ""} tooltip={item.title}>
-                  <Link to={item.url} className="flex items-center gap-3" onClick={()=> sidebar.setOpen(false)}>
+                  <Link to={item.url} className="flex items-center gap-3" onClick={()=> closeSidebar}>
                     {item.icon && ( <item.icon className="size-4 shrink-0" />)}
                     <span className="truncate">{item.title}</span>
                   </Link>

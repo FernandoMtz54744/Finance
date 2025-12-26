@@ -15,6 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthTarjetasIndexRouteImport } from './routes/_auth/tarjetas/index'
+import { Route as AuthSaldoIndexRouteImport } from './routes/_auth/saldo/index'
 import { Route as AuthRendimientosIndexRouteImport } from './routes/_auth/rendimientos/index'
 import { Route as AuthEfectivoIndexRouteImport } from './routes/_auth/efectivo/index'
 import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/edit'
@@ -51,6 +52,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthTarjetasIndexRoute = AuthTarjetasIndexRouteImport.update({
   id: '/tarjetas/',
   path: '/tarjetas/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthSaldoIndexRoute = AuthSaldoIndexRouteImport.update({
+  id: '/saldo/',
+  path: '/saldo/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthRendimientosIndexRoute = AuthRendimientosIndexRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
   '/rendimientos': typeof AuthRendimientosIndexRoute
+  '/saldo': typeof AuthSaldoIndexRoute
   '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesByTo {
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
   '/rendimientos': typeof AuthRendimientosIndexRoute
+  '/saldo': typeof AuthSaldoIndexRoute
   '/tarjetas': typeof AuthTarjetasIndexRoute
 }
 export interface FileRoutesById {
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/_auth/tarjetas/edit': typeof AuthTarjetasEditRoute
   '/_auth/efectivo/': typeof AuthEfectivoIndexRoute
   '/_auth/rendimientos/': typeof AuthRendimientosIndexRoute
+  '/_auth/saldo/': typeof AuthSaldoIndexRoute
   '/_auth/tarjetas/': typeof AuthTarjetasIndexRoute
 }
 export interface FileRouteTypes {
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/tarjetas/edit'
     | '/efectivo'
     | '/rendimientos'
+    | '/saldo'
     | '/tarjetas'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/tarjetas/edit'
     | '/efectivo'
     | '/rendimientos'
+    | '/saldo'
     | '/tarjetas'
   id:
     | '__root__'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/_auth/tarjetas/edit'
     | '/_auth/efectivo/'
     | '/_auth/rendimientos/'
+    | '/_auth/saldo/'
     | '/_auth/tarjetas/'
   fileRoutesById: FileRoutesById
 }
@@ -240,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/tarjetas'
       fullPath: '/tarjetas'
       preLoaderRoute: typeof AuthTarjetasIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/saldo/': {
+      id: '/_auth/saldo/'
+      path: '/saldo'
+      fullPath: '/saldo'
+      preLoaderRoute: typeof AuthSaldoIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/_auth/rendimientos/': {
@@ -310,6 +329,7 @@ interface AuthRouteRouteChildren {
   AuthTarjetasEditRoute: typeof AuthTarjetasEditRoute
   AuthEfectivoIndexRoute: typeof AuthEfectivoIndexRoute
   AuthRendimientosIndexRoute: typeof AuthRendimientosIndexRoute
+  AuthSaldoIndexRoute: typeof AuthSaldoIndexRoute
   AuthTarjetasIndexRoute: typeof AuthTarjetasIndexRoute
 }
 
@@ -322,6 +342,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthTarjetasEditRoute: AuthTarjetasEditRoute,
   AuthEfectivoIndexRoute: AuthEfectivoIndexRoute,
   AuthRendimientosIndexRoute: AuthRendimientosIndexRoute,
+  AuthSaldoIndexRoute: AuthSaldoIndexRoute,
   AuthTarjetasIndexRoute: AuthTarjetasIndexRoute,
 }
 

@@ -4,7 +4,7 @@ export type Denominacion = typeof DENOMINACIONES[number]
 export type Efectivo = {
     id: number,
     idUsuario: number,
-    fecha: Date,
+    fecha: string,
     denominaciones: Record<Denominacion, number>
 }
 

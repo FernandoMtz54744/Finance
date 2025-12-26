@@ -14,3 +14,12 @@ export const getEfectivo = async (idUsuario: string) =>{
     if (error) throw error;
     return data;
 }
+
+export const getLastEfectivo = async (idUsuario: string) =>{
+    const { data, error } = await supabase.from("efectivo").select("*").eq("idUsuario", idUsuario)
+        .order("fecha", { ascending: false })
+        .limit(1)
+        .single();
+    if (error) throw error;
+    return data;
+}

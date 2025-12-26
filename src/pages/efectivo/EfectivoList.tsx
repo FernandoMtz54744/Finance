@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { dateToString, formatMXN } from "@/lib/utils";
+import { dateToString, formatMXN, IsoToDate } from "@/lib/utils";
 import type { Efectivo } from "@/types/efectivo";
 
 type Props = {
@@ -15,7 +15,7 @@ export default function EfectivoList({data}: Props) {
             return  <AccordionItem value={`efectivo-${i}`} key={i}>
                         <AccordionTrigger className="hover:cursor-pointer">
                             <div className="flex flex-row justify-between w-full">
-                                <div>Efectivo del {dateToString(new Date(efectivo.fecha))}</div>
+                                <div>Efectivo del {dateToString(IsoToDate(efectivo.fecha))}</div>
                                 <div>{formatMXN(total)}</div>
                             </div> 
                         </AccordionTrigger>
