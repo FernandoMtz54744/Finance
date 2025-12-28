@@ -1,3 +1,4 @@
+import { Separator } from '@/components/ui/separator';
 import EfectivoForm from '@/pages/efectivo/EfectivoForm'
 import EfectivoList from '@/pages/efectivo/EfectivoList'
 import ErrorPage from '@/pages/layouts/ErrorPage';
@@ -28,6 +29,7 @@ function RouteComponent() {
 
   return <>
     <EfectivoForm/>
+    <Separator className='my-8'/>
     <EfectivoList data = {data ?? []}/>
   </>
   

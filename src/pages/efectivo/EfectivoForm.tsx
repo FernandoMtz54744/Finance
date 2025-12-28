@@ -45,7 +45,7 @@ export default function EfectivoForm() {
     }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="px-8 flex flex-row justify-center mb-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="px-8 flex flex-row justify-center">
       <table className="w-full border-separate border-spacing-y-2">
         <thead>
           <tr>

@@ -1,7 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { dateToString, formatMXN, IsoToDate } from "@/lib/utils"
 import type { Efectivo } from "@/types/efectivo"
-import type { Tarjeta } from "@/types/tarjeta"
+import { getTipoDescripcion, type Tarjeta } from "@/types/tarjeta"
 
 type Params = {
     tarjetas: Tarjeta[],
@@ -30,7 +30,7 @@ export default function SaldoActual({ tarjetas, efectivo }: Params) {
                     <AccordionContent>
                         {tarjetas.map(tarjeta => 
                             <div className="flex flex-row justify-between my-1" key={tarjeta.id}>
-                                <div>{tarjeta.nombre}</div>
+                                <div>{`${tarjeta.nombre} ${getTipoDescripcion[tarjeta.tipo]}`}</div>
                                 <div>{formatMXN(tarjeta.ultimoPeriodo?.saldoFinal ?? 0)}</div>
                             </div>
                         )}
@@ -43,7 +43,7 @@ export default function SaldoActual({ tarjetas, efectivo }: Params) {
                 <AccordionItem value="efectivo" key={"efectivo"}>
                     <AccordionTrigger className="hover:cursor-pointer hover:no-underline" >
                         <div className="flex flex-row justify-between w-full">
-                            <div>Efectivo ({dateToString(IsoToDate(efectivo.fecha))})</div>
+                            <div>Efectivo</div>
                             <div className="text-emerald-400">{formatMXN(totalEfectivo)}</div>
                         </div> 
                     </AccordionTrigger>

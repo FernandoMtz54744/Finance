@@ -20,8 +20,8 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
   const items = [
     { title: "Tarjetas", url: "/tarjetas", icon: CreditCard },
     { title: "Efectivo", url: "/efectivo", icon: Banknote },
-    { title: "Saldo", url: "/saldo", icon: CircleDollarSign },
-    { title: "Rendimientos", url: "/rendimientos", icon: DiamondPercent }
+    { title: "Rendimientos", url: "/rendimientos", icon: DiamondPercent },
+    { title: "Saldo", url: "/saldo", icon: CircleDollarSign }
   ]
 
   const sidebar = useSidebar();

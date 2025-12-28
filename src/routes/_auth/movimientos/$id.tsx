@@ -13,7 +13,6 @@ import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { CircleCheck, Eye, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
 
 export const Route = createFileRoute('/_auth/movimientos/$id')({
