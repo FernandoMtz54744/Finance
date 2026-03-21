@@ -7,6 +7,8 @@ import { useTarjetaStore } from "@/stores/tarjetaStore";
 import type { Periodo } from "@/types/periodo";
 import { getTipoDescripcion } from "@/types/tarjeta";
 import { useRouter } from "@tanstack/react-router";
+import { DateTime } from "luxon";
+import type { boolean } from "zod";
 
 type Props = {
     periodos: Periodo[]
@@ -24,6 +26,14 @@ export default function PeriodoList({ periodos }: Props) {
         router.navigate({ to: "/movimientos/$id", params: { id: periodo.id } });
     }
 
+    const isActual = (fechaInicio: Date, fechaCorte: Date): boolean =>{
+        const hoy = DateTime.now();
+        const inicio = DateTime.fromJSDate(fechaInicio);
+        const corte = DateTime.fromJSDate(fechaCorte);
+
+        return hoy >= inicio && hoy <= corte;
+    }
+
 
     return (<>
     <div className="text-center text-2xl font-medium">{tarjeta?.nombre} - {tarjeta?.tipo && getTipoDescripcion[tarjeta?.tipo]}</div>
@@ -31,7 +41,9 @@ export default function PeriodoList({ periodos }: Props) {
         {periodos.sort((a,b) => IsoToDate(b.fechaInicio).getTime() - IsoToDate(a.fechaInicio).getTime()).map((periodo, i) => (
             <ContextMenu>
                 <ContextMenuTrigger>
-                    <TimelineItem title={periodo.nombre} key={i} validado={periodo.validado} onClick={()=>handleClick(periodo)} className="hover:cursor-pointer">
+                    <TimelineItem title={periodo.nombre} key={i} validado={periodo.validado} 
+                    isActual={isActual(IsoToDate(periodo.fechaInicio), IsoToDate(periodo.fechaCorte))}
+                    onClick={()=>handleClick(periodo)} className="hover:cursor-pointer">
                         <div className="flex md:flex-row flex-col gap-x-5">
                             <div>Fecha inicio: {dateToString(IsoToDate(periodo.fechaInicio))}</div>
                             <div>Corte: {dateToString(IsoToDate(periodo.fechaCorte))}</div>

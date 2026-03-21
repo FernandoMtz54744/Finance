@@ -29,9 +29,13 @@ export default function PeriodoForm({periodo, onSubmit, tarjeta }: Props) {
     resolver: zodResolver(periodoSchema),
     defaultValues: {
       nombre: periodo?.nombre ?? "",
-      fechaInicio: periodo?.fechaInicio ? IsoToDate(periodo.fechaInicio) : new Date(),
+      fechaInicio: periodo?.fechaInicio 
+        ? IsoToDate(periodo.fechaInicio) 
+        : (tarjeta.ultimoPeriodo?.fechaCorte 
+          ?  DateTime.fromISO(tarjeta.ultimoPeriodo.fechaCorte).plus({ days: 1 }).toJSDate() 
+          : new Date()),
       fechaCorte: periodo?.fechaCorte ?  IsoToDate(periodo.fechaCorte) : new Date(),
-      saldoInicial: periodo?.saldoInicial ?? 0 
+      saldoInicial: periodo?.saldoInicial ?? tarjeta.ultimoPeriodo?.saldoFinal ?? 0
     }
   });
 

@@ -8,8 +8,8 @@ export default function Landing() {
   const navigate = useNavigate(); 
 
   return (
-    <div className="snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
-      <LampContainer className="snap-center min-h-screen">
+    <>
+      <LampContainer>
         <motion.h1 initial={{ opacity: 0.5, y: 100 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
           className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
@@ -32,11 +32,11 @@ export default function Landing() {
       </LampContainer>
 
       <motion.section initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: "easeOut" }} className="relative z-10 bg-white dark:bg-black snap-center min-h-screen">
+      transition={{ duration: 0.8, ease: "easeOut" }} className="relative z-10 bg-white dark:bg-black">
         <FeaturesSectionDemo />
       </motion.section>
       <motion.section initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: "easeOut" }} className="relative z-10 bg-white dark:bg-black py-32 snap-center min-h-screen">
+        transition={{ duration: 0.8, ease: "easeOut" }} className="relative z-10 bg-white dark:bg-black py-32">
         <div className="max-w-4xl mx-auto px-8 text-center">
           <h3 className="text-3xl md:text-4xl font-medium text-black dark:text-white">
             Acerca de Finance
@@ -55,6 +55,6 @@ export default function Landing() {
           </div>
         </div>
       </motion.section>
-    </div>
+    </>
   )
 }
