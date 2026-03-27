@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 
 export default async function handler(req, res) {
     if (req.method !== 'GET') 
-        if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' });
+        return res.status(405).json({ error: 'Método no permitido' });
 
     try{
         const diasAntes = [18,15,14,10,5,3,2];
