@@ -18,6 +18,7 @@ import { Route as AuthTarjetasIndexRouteImport } from './routes/_auth/tarjetas/i
 import { Route as AuthSaldoIndexRouteImport } from './routes/_auth/saldo/index'
 import { Route as AuthRendimientosIndexRouteImport } from './routes/_auth/rendimientos/index'
 import { Route as AuthEfectivoIndexRouteImport } from './routes/_auth/efectivo/index'
+import { Route as AuthBalanceIndexRouteImport } from './routes/_auth/balance/index'
 import { Route as AuthTarjetasEditRouteImport } from './routes/_auth/tarjetas/edit'
 import { Route as AuthTarjetasAddRouteImport } from './routes/_auth/tarjetas/add'
 import { Route as AuthPeriodosEditRouteImport } from './routes/_auth/periodos/edit'
@@ -69,6 +70,11 @@ const AuthEfectivoIndexRoute = AuthEfectivoIndexRouteImport.update({
   path: '/efectivo/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthBalanceIndexRoute = AuthBalanceIndexRouteImport.update({
+  id: '/balance/',
+  path: '/balance/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AuthTarjetasEditRoute = AuthTarjetasEditRouteImport.update({
   id: '/tarjetas/edit',
   path: '/tarjetas/edit',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/periodos/edit': typeof AuthPeriodosEditRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/balance': typeof AuthBalanceIndexRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
   '/rendimientos': typeof AuthRendimientosIndexRoute
   '/saldo': typeof AuthSaldoIndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/periodos/edit': typeof AuthPeriodosEditRoute
   '/tarjetas/add': typeof AuthTarjetasAddRoute
   '/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/balance': typeof AuthBalanceIndexRoute
   '/efectivo': typeof AuthEfectivoIndexRoute
   '/rendimientos': typeof AuthRendimientosIndexRoute
   '/saldo': typeof AuthSaldoIndexRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/_auth/periodos/edit': typeof AuthPeriodosEditRoute
   '/_auth/tarjetas/add': typeof AuthTarjetasAddRoute
   '/_auth/tarjetas/edit': typeof AuthTarjetasEditRoute
+  '/_auth/balance/': typeof AuthBalanceIndexRoute
   '/_auth/efectivo/': typeof AuthEfectivoIndexRoute
   '/_auth/rendimientos/': typeof AuthRendimientosIndexRoute
   '/_auth/saldo/': typeof AuthSaldoIndexRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/periodos/edit'
     | '/tarjetas/add'
     | '/tarjetas/edit'
+    | '/balance'
     | '/efectivo'
     | '/rendimientos'
     | '/saldo'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/periodos/edit'
     | '/tarjetas/add'
     | '/tarjetas/edit'
+    | '/balance'
     | '/efectivo'
     | '/rendimientos'
     | '/saldo'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/_auth/periodos/edit'
     | '/_auth/tarjetas/add'
     | '/_auth/tarjetas/edit'
+    | '/_auth/balance/'
     | '/_auth/efectivo/'
     | '/_auth/rendimientos/'
     | '/_auth/saldo/'
@@ -275,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthEfectivoIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/balance/': {
+      id: '/_auth/balance/'
+      path: '/balance'
+      fullPath: '/balance'
+      preLoaderRoute: typeof AuthBalanceIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/tarjetas/edit': {
       id: '/_auth/tarjetas/edit'
       path: '/tarjetas/edit'
@@ -327,6 +346,7 @@ interface AuthRouteRouteChildren {
   AuthPeriodosEditRoute: typeof AuthPeriodosEditRoute
   AuthTarjetasAddRoute: typeof AuthTarjetasAddRoute
   AuthTarjetasEditRoute: typeof AuthTarjetasEditRoute
+  AuthBalanceIndexRoute: typeof AuthBalanceIndexRoute
   AuthEfectivoIndexRoute: typeof AuthEfectivoIndexRoute
   AuthRendimientosIndexRoute: typeof AuthRendimientosIndexRoute
   AuthSaldoIndexRoute: typeof AuthSaldoIndexRoute
@@ -340,6 +360,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthPeriodosEditRoute: AuthPeriodosEditRoute,
   AuthTarjetasAddRoute: AuthTarjetasAddRoute,
   AuthTarjetasEditRoute: AuthTarjetasEditRoute,
+  AuthBalanceIndexRoute: AuthBalanceIndexRoute,
   AuthEfectivoIndexRoute: AuthEfectivoIndexRoute,
   AuthRendimientosIndexRoute: AuthRendimientosIndexRoute,
   AuthSaldoIndexRoute: AuthSaldoIndexRoute,
