@@ -13,12 +13,12 @@ function RouteComponent() {
 
   const id = Route.useParams().id;
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isFetching } = useQuery({
     queryKey: ['periodos'],
     queryFn: ()=> getPeriodos(id)
   });
 
-  if (isLoading) return <LoadingPage/>;
+  if (isLoading || isFetching) return <LoadingPage/>;
   
   if (error) return <ErrorPage error={error} />;
 

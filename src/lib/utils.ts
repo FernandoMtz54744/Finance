@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { DateTime } from "luxon";
+import type { Periodo } from "@/types/periodo";
+import type { Tarjeta } from "@/types/tarjeta";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -38,4 +40,23 @@ export function formatMXN(cantidad: number){
     currency: "MXN",
     minimumFractionDigits: 2
   }).format(cantidad);
+}
+
+// Valida si al dia de hoy un periodo está pendiente de validación
+export function isPeriodoPendienteValidacion(periodo: Periodo): boolean {
+  if (periodo.validado) return false;
+  const hoy = DateTime.now().startOf("day");
+  const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
+  return hoy > corte;
+}
+
+export function isPendientePeriodoActual(tarjeta: Tarjeta): boolean {
+  const periodo = tarjeta?.ultimoPeriodo;
+  if (!periodo?.fechaInicio || !periodo?.fechaCorte) return true;
+
+  const hoy = DateTime.now().startOf("day");
+  const inicio = DateTime.fromISO(periodo.fechaInicio).startOf("day");
+  const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
+
+  return hoy < inicio || hoy > corte;
 }

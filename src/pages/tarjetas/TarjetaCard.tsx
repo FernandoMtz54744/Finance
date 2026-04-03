@@ -1,5 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte, IsoToDate } from "@/lib/utils";
+import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte, IsoToDate, isPendientePeriodoActual, isPeriodoPendienteValidacion } from "@/lib/utils";
 import { useTarjetaStore } from "@/stores/tarjetaStore";
 import type { Alerta } from "@/types/alerta";
 import type { Tarjeta } from "@/types/tarjeta"
@@ -16,27 +16,6 @@ const tiposTarjeta = {
 };
 
 export default function TarjetaCard({tarjeta}: Props) {
-
-  const isPendingValidation = (): boolean => {
-    const ultimoPeriodo = tarjeta.ultimoPeriodo;
-    if (!ultimoPeriodo || ultimoPeriodo.validado) return false;
-
-    const hoy = DateTime.now().startOf("day");
-    const corte = DateTime.fromISO(ultimoPeriodo.fechaCorte).startOf("day");
-    return hoy > corte;
-  }
-
-  const isPendingCurrentPeriod = (): boolean => {
-    const periodo = tarjeta.ultimoPeriodo;
-    if (!periodo?.fechaInicio || !periodo?.fechaCorte) return true;
-
-    const hoy = DateTime.now().startOf("day");
-    const inicio = DateTime.fromISO(periodo.fechaInicio).startOf("day");
-    const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
-
-    return hoy < inicio || hoy > corte;
-  }
-
   const router = useRouter();
   const setTarjeta = useTarjetaStore((state) => state.setTarjeta);
 
@@ -46,8 +25,10 @@ export default function TarjetaCard({tarjeta}: Props) {
   }
 
   const alertas: Alerta[] = [];
-
-  if (isPendingValidation()) {
+  const pendingValidation = tarjeta.ultimoPeriodo ? isPeriodoPendienteValidacion(tarjeta.ultimoPeriodo) : false;
+  const pendingCurrentPeriod = isPendientePeriodoActual(tarjeta);
+  
+  if (pendingValidation) {
     alertas.push({
       tipo: "periodoPendiente",
       mensaje: "Falta validar el periodo",
@@ -55,7 +36,7 @@ export default function TarjetaCard({tarjeta}: Props) {
     });
   }
 
-  if (isPendingCurrentPeriod()) {
+  if (pendingCurrentPeriod) {
     alertas.push({
       tipo: "fueraDePeriodo",
       mensaje: "Falta agregar el periodo actual",

@@ -12,7 +12,7 @@ export default function RendimientosList({rendimientosPorMes}: Params) {
   return (
     <Accordion collapsible type="single" className="w-full px-6">
         {Object.entries(rendimientosPorMes)
-        .sort(([mesA], [mesB]) => mesA.localeCompare(mesB))
+        .sort(([mesA], [mesB]) => mesB.localeCompare(mesA))
         .map(([mes, rendimientos]) => {
             const totalMes = rendimientos.reduce((sum, r) => sum + r.cantidad, 0);
             return( 
