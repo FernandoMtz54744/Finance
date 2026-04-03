@@ -61,7 +61,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
   useEffect(() => {
     if(tipo === 'a' || tipo === 'r'){
       setValue("cantidad", Math.abs(cantidad));
-    }else{
+    }else if(tipo === 'c'){
       setValue("cantidad", Math.abs(cantidad) * -1);
     }
   }, [tipo, setValue]);
@@ -99,6 +99,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
                         <SelectItem value="a">Abono</SelectItem>
                         <SelectItem value="c">Cargo</SelectItem>
                         <SelectItem value="r">Rendimiento</SelectItem>
+                        <SelectItem value="t">Transferencia (entre cuentas)</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

@@ -1,19 +1,21 @@
 import { DatePicker } from '@/components/form/DatePicker';
 import FormError from '@/components/form/FormError';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { formatMXN } from '@/lib/utils';
 import MovimientosBalanceList from '@/pages/balance/MovimientoBalanceList';
 import ErrorPage from '@/pages/layouts/ErrorPage';
 import LoadingPage from '@/pages/layouts/LoadingPage';
 import { getMovimientosBalance } from '@/services/balanceService';
 import { useAuthStore } from '@/stores/authStore';
-import type { MovimientoBalance, MovimientosBalanceFormType } from '@/types/movimientoBalance';
+import type {  MovimientosBalanceFormType } from '@/types/movimientoBalance';
 import { movimientoBalanceSchema } from '@/validations/movimientosBalanceSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router'
 import { ArrowBigDown, ArrowBigUp } from 'lucide-react';
 import { DateTime } from 'luxon';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 
 export const Route = createFileRoute('/_auth/balance/')({
@@ -34,6 +36,8 @@ function RouteComponent() {
   const fechaInicio = useWatch({ control, name: "fechaInicio" });
   const fechaFin = useWatch({ control, name: "fechaFin" });
 
+  const [mostrarTransferencias, setMostrarTransferencias] = useState(true)
+
   const { data: movimientos, isLoading, isFetching ,error } = useQuery({
       queryKey: ['balance', fechaInicio, fechaFin],
       queryFn: ()=> getMovimientosBalance(
@@ -52,13 +56,15 @@ function RouteComponent() {
     }
   }, [fechaInicio, setValue]);
 
-  const balanceTotal = movimientos.reduce((total, current)=>{
-      return total + current.cantidad;
-    }, 0);
-
   if (isLoading || isFetching) return <LoadingPage/>; 
     
   if (error) return <ErrorPage error={error} />;
+
+  const movimientosFilter = movimientos?.filter(movimiento => mostrarTransferencias || movimiento.tipo !== 't'); 
+
+  const balanceTotal = movimientosFilter.reduce((total, current)=>{
+      return total + current.cantidad;
+    }, 0);
 
   return (
   <div>
@@ -87,8 +93,13 @@ function RouteComponent() {
       }
     </div>
 
+    <div className="flex items-center justify-end space-x-2 mx-8 mt-4">
+      <Switch id="count-transferencia" checked={mostrarTransferencias} onCheckedChange={setMostrarTransferencias} className='hover:cursor-pointer'/>
+      <Label htmlFor="count-transferencia" className='hover:cursor-pointer'>Mostrar transferencias</Label>
+    </div>
+
     {/* Tabla */}
-    <MovimientosBalanceList movimientos={movimientos ?? []} key={""}></MovimientosBalanceList>
+    <MovimientosBalanceList movimientos={movimientosFilter} key={""}></MovimientosBalanceList>
   </div>
   )
 }

@@ -7,7 +7,7 @@ export type Movimiento = {
     fecha: string,
     cantidad: number,
     motivo: string,
-    tipo: 'a' | 'c' | 'r' //[Abono, Cargo, Rendimiento]
+    tipo: 'a' | 'c' | 'r' | 't' //[Abono, Cargo, Rendimiento, Transferencia (misma cuenta)]
 }
 
 export type MovimientoFormType = z.infer<typeof movimientoSchema>;

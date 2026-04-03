@@ -4,7 +4,7 @@ export const movimientoSchema = z.object({
     fecha: z.date({
         error: "Ingresa una fecha"
     }),
-    tipo: z.enum(['c', 'a', 'r']), //m: Movimiento (engloba cargo y abono), r: rendimiento
+    tipo: z.enum(['c', 'a', 'r', 't']), //cargo, abono, rendimiento, transferencia
     cantidad: z.number()
         .refine(val => val !== 0, { message: "Ingresa una cantidad" }),
     motivo: z.string()

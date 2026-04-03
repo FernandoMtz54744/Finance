@@ -3,7 +3,7 @@ import { deleteMovimiento } from "@/services/movimientoService"
 import { usePeriodoStore } from "@/stores/periodoStore"
 import type { Movimiento } from "@/types/movimiento"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { BanknoteArrowUp, Trash2 } from "lucide-react"
+import { ArrowLeftRight, BanknoteArrowUp, Trash2 } from "lucide-react"
 import ErrorPage from "../layouts/ErrorPage"
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu"
 
@@ -41,6 +41,7 @@ export default function MovimientosTable({movimientos, title, bgColor, setSumaTe
               <div className="text-left w-full pl-4 flex flex-row">
                 {movimiento.motivo}
                 {movimiento.tipo === "r" && <BanknoteArrowUp className="text-emerald-400 ml-2"/>}
+                {movimiento.tipo === "t" && <ArrowLeftRight className="text-blue-400 ml-2"/>}
               </div>
               <div>{formatMXN(movimiento.cantidad)}</div>
               {!periodo.validado && <Trash2 className="ml-2 hover:cursor-pointer hover:text-red-500" onClick={()=>deleteMovimientos.mutate(movimiento.id)}/>}

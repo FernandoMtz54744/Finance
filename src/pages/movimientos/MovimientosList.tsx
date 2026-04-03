@@ -9,8 +9,8 @@ type Props = {
 
 export default function MovimientosList({movimientos}: Props) {
    
-  const abonos = movimientos.filter(movimiento => ['a', 'r'].includes(movimiento.tipo));
-  const cargos = movimientos.filter(movimiento => movimiento.tipo === 'c');
+  const abonos = movimientos.filter(movimiento => movimiento.cantidad > 0);
+  const cargos = movimientos.filter(movimiento => movimiento.cantidad < 0);
   
   const [sumaTemp, setSumaTemp] = useState<number>(0);
 

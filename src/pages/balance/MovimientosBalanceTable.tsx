@@ -1,5 +1,5 @@
 import { cn, dateToString, formatMXN, IsoToDate } from "@/lib/utils"
-import { BanknoteArrowUp } from "lucide-react"
+import { ArrowLeftRight, BanknoteArrowUp } from "lucide-react"
 import type { MovimientoBalance } from "@/types/movimientoBalance"
 import { getTipoDescripcion } from "@/types/tarjeta"
 
@@ -20,6 +20,7 @@ export default function MovimientosBalanceTable({movimientos, title, bgColor}: P
         <div className="text-left w-full pl-4 flex flex-row">
           {movimiento.motivo} - {movimiento.tarjeta.nombre} {getTipoDescripcion[movimiento.tarjeta.tipo]}
           {movimiento.tipo === "r" && <BanknoteArrowUp className="text-emerald-400 ml-2"/>}
+          {movimiento.tipo === "t" && <ArrowLeftRight className="text-blue-400 ml-2"/>}
         </div>
         <div>{formatMXN(movimiento.cantidad)}</div>
       </div>

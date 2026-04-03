@@ -14,6 +14,8 @@ import { CircleCheck, Eye, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 export const Route = createFileRoute('/_auth/movimientos/$id')({
   component: RouteComponent,
@@ -29,18 +31,20 @@ function RouteComponent() {
 
   const [isLoadingFile, setIsLoadingFile] = useState(false); 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [mostrarTransferencias, setMostrarTransferencias] = useState(true)
 
   if(!periodo || !tarjeta){
     router.navigate({to: "/tarjetas"})
     return;
   }
 
-  const { data: movimientos, isLoading, error } = useQuery({
+  const { data: movimientos, isLoading, error, isFetching} = useQuery({
     queryKey: ['movimientos', id],
-    queryFn: ()=> getMovimientos(id)
+    queryFn: ()=> getMovimientos(id),
+    initialData: []
   });
 
-  if (isLoading || isLoadingFile) return <LoadingPage/>;
+  if (isLoading || isLoadingFile || isFetching) return <LoadingPage/>;
   
   if (error) return <ErrorPage error={error} />;
 
@@ -91,10 +95,18 @@ function RouteComponent() {
     }
   }
 
+  const movimientosFilter = movimientos?.filter(movimiento => mostrarTransferencias || movimiento.tipo !== 't'); 
+
   return <>
     <MovimientosHeader periodo={periodo} tarjeta={tarjeta} movimientos={movimientos ?? []}/>
     {!periodo.validado && <MovimientosForm idPeriodo={id} periodo={periodo} tarjeta={tarjeta}/>}
-    <MovimientosList movimientos={movimientos ?? []}/>
+
+    <div className="flex items-center justify-end space-x-2 mx-8 mt-4">
+      <Switch id="count-transferencia" checked={mostrarTransferencias} onCheckedChange={setMostrarTransferencias} className='hover:cursor-pointer'/>
+      <Label htmlFor="count-transferencia" className='hover:cursor-pointer'>Mostrar transferencias</Label>
+    </div>
+
+    <MovimientosList movimientos={movimientosFilter}/>
     {!periodo.validado && 
       <ConfirmDialog title='Validar periodo' confirmText='Aceptar' cancelText='Cancelar' confirmAction={validarPeriodo}
         description='¿Deseas marcar este periodo como válido?'>

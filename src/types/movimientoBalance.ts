@@ -6,7 +6,7 @@ export type MovimientoBalance = {
     fecha: string,
     cantidad: number,
     motivo: string,
-    tipo: 'a' | 'c' | 'r',
+    tipo: 'a' | 'c' | 'r' | 't',
     tarjeta : {
         nombre: string,
         tipo: 'd' | 'c'
