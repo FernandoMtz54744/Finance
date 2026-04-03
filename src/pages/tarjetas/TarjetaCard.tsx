@@ -1,7 +1,10 @@
-import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte, IsoToDate } from "@/lib/utils";
 import { useTarjetaStore } from "@/stores/tarjetaStore";
+import type { Alerta } from "@/types/alerta";
 import type { Tarjeta } from "@/types/tarjeta"
 import { useRouter } from "@tanstack/react-router";
+import { DateTime, Interval } from "luxon";
 
 type Props = {
     tarjeta: Tarjeta
@@ -13,6 +16,27 @@ const tiposTarjeta = {
 };
 
 export default function TarjetaCard({tarjeta}: Props) {
+
+  const isPendingValidation = (): boolean => {
+    const ultimoPeriodo = tarjeta.ultimoPeriodo;
+    if (!ultimoPeriodo || ultimoPeriodo.validado) return false;
+
+    const hoy = DateTime.now().startOf("day");
+    const corte = DateTime.fromISO(ultimoPeriodo.fechaCorte).startOf("day");
+    return hoy > corte;
+  }
+
+  const isPendingCurrentPeriod = (): boolean => {
+    const periodo = tarjeta.ultimoPeriodo;
+    if (!periodo?.fechaInicio || !periodo?.fechaCorte) return true;
+
+    const hoy = DateTime.now().startOf("day");
+    const inicio = DateTime.fromISO(periodo.fechaInicio).startOf("day");
+    const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
+
+    return hoy < inicio || hoy > corte;
+  }
+
   const router = useRouter();
   const setTarjeta = useTarjetaStore((state) => state.setTarjeta);
 
@@ -21,10 +45,55 @@ export default function TarjetaCard({tarjeta}: Props) {
     router.navigate({ to: "/periodos/$id", params: { id: tarjeta.id } });
   }
 
+  const alertas: Alerta[] = [];
+
+  if (isPendingValidation()) {
+    alertas.push({
+      tipo: "periodoPendiente",
+      mensaje: "Falta validar el periodo",
+      color: "bg-red-600",
+    });
+  }
+
+  if (isPendingCurrentPeriod()) {
+    alertas.push({
+      tipo: "fueraDePeriodo",
+      mensaje: "Falta agregar el periodo actual",
+      color: "bg-red-600",
+    });
+  }
+
   return (
     <div onClick={ ()=> handleClick(tarjeta) } 
-      className="w-2xs rounded-md p-4 space-y-3 hover:cursor-pointer"  
+      className="relative w-2xs rounded-md p-4 space-y-3 hover:cursor-pointer"  
       style={{background: `linear-gradient(145deg, ${tarjeta.color}, #020024)`}}>
+
+    {alertas.length > 0 && (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className={`
+              absolute -top-2 -right-2.5
+              min-w-5 h-5 px-1
+              flex items-center justify-center
+              text-[10px] font-semibold text-white
+              rounded-full
+              ${alertas[0].color}
+            `}
+          >
+          {alertas.length}
+        </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="flex flex-col">
+              {alertas.map((alerta) => (
+                <p key={alerta.tipo}>{alerta.mensaje}</p>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )}
 
       <div className="flex flex-row justify-between">
         <div>{tarjeta.nombre}</div>
