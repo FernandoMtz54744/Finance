@@ -53,6 +53,7 @@ function RouteComponent() {
       setIsLoadingFile(true);
       const file = e.target.files?.[0];
       if (!file){
+        toast.error("No se encontró el archivo");
         setIsLoadingFile(false);
         return;
       };
