@@ -38,13 +38,13 @@ function RouteComponent() {
     return;
   }
 
-  const { data: movimientos, isLoading, error, isFetching} = useQuery({
+  const { data: movimientos, isLoading, error } = useQuery({
     queryKey: ['movimientos', id],
     queryFn: ()=> getMovimientos(id),
     initialData: []
   });
 
-  if (isLoading || isLoadingFile || isFetching) return <LoadingPage/>;
+  if (isLoading || isLoadingFile ) return <LoadingPage/>;
   
   if (error) return <ErrorPage error={error} />;
 
