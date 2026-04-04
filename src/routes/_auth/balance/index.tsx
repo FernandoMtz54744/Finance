@@ -2,7 +2,7 @@ import { DatePicker } from '@/components/form/DatePicker';
 import FormError from '@/components/form/FormError';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { formatMXN } from '@/lib/utils';
+import { dateToString, formatMXN } from '@/lib/utils';
 import MovimientosBalanceList from '@/pages/balance/MovimientoBalanceList';
 import ErrorPage from '@/pages/layouts/ErrorPage';
 import LoadingPage from '@/pages/layouts/LoadingPage';
@@ -39,7 +39,7 @@ function RouteComponent() {
   const [mostrarTransferencias, setMostrarTransferencias] = useState(true)
 
   const { data: movimientos, isLoading, isFetching ,error } = useQuery({
-      queryKey: ['balance', fechaInicio, fechaFin],
+      queryKey: ['balance', dateToString(fechaInicio), dateToString(fechaFin)],
       queryFn: ()=> getMovimientosBalance(
       usuario!.id, 
       DateTime.fromJSDate(fechaInicio).toISODate()!, 
@@ -99,7 +99,7 @@ function RouteComponent() {
     </div>
 
     {/* Tabla */}
-    <MovimientosBalanceList movimientos={movimientosFilter} key={""}></MovimientosBalanceList>
+    <MovimientosBalanceList movimientos={movimientosFilter}></MovimientosBalanceList>
   </div>
   )
 }
