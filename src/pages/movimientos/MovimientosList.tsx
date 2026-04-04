@@ -29,6 +29,7 @@ export default function MovimientosList({movimientos}: Props) {
             <MovimientosTable movimientos={cargos} title="Cargos" bgColor="bg-red-900" setSumaTemp={setSumaTemp}/>
         </div>
     </div>
+
     {/* Mobile */}
     <div className="md:hidden px-4 mt-6">
       <div className="flex justify-center gap-4 mb-4">

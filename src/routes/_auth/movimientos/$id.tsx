@@ -102,9 +102,9 @@ function RouteComponent() {
     <MovimientosHeader periodo={periodo} tarjeta={tarjeta} movimientos={movimientos ?? []}/>
     {!periodo.validado && <MovimientosForm idPeriodo={id} periodo={periodo} tarjeta={tarjeta}/>}
 
-    <div className="flex items-center justify-end space-x-2 mx-8 mt-4">
-      <Switch id="count-transferencia" checked={mostrarTransferencias} onCheckedChange={setMostrarTransferencias} className='hover:cursor-pointer'/>
+    <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 mx-8 mt-4">
       <Label htmlFor="count-transferencia" className='hover:cursor-pointer'>Mostrar transferencias</Label>
+      <Switch id="count-transferencia" checked={mostrarTransferencias} onCheckedChange={setMostrarTransferencias} className='hover:cursor-pointer'/>
     </div>
 
     <MovimientosList movimientos={movimientosFilter}/>
