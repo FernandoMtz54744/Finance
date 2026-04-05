@@ -25,7 +25,7 @@ export default function MovimientosBalanceList({movimientos}: Props) {
     </div>
     
     {/* Mobile  */}
-    <div className="md:hidden px-4 mt-6">
+    <div className="md:hidden px-4 mt-6 mb-8">
       <div className="flex justify-center gap-4 mb-4">
         <button onClick={() => setTipoMovil("abonos")} 
           className={`px-4 py-2 rounded bg-emerald-900  ${tipoMovil !== "abonos" && "opacity-50"}`}>

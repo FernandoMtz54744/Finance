@@ -9,7 +9,8 @@ export type Tarjeta = {
     diaCorte: number,
     correo: string,
     color: string,
-    ultimoPeriodo?: Periodo
+    ultimoPeriodo?: Periodo,
+    hasPendingValidation?: boolean
 }
 
 export type TarjetaFormType = z.infer<typeof tarjetaSchema>;

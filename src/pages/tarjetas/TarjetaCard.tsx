@@ -1,10 +1,9 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte, IsoToDate, isPendientePeriodoActual, isPeriodoPendienteValidacion } from "@/lib/utils";
+import { dateToString, formatMXN, getFechaLimitePago, getNextFechaCorte, isPendientePeriodoActual } from "@/lib/utils";
 import { useTarjetaStore } from "@/stores/tarjetaStore";
 import type { Alerta } from "@/types/alerta";
 import type { Tarjeta } from "@/types/tarjeta"
 import { useRouter } from "@tanstack/react-router";
-import { DateTime, Interval } from "luxon";
 
 type Props = {
     tarjeta: Tarjeta
@@ -25,10 +24,9 @@ export default function TarjetaCard({tarjeta}: Props) {
   }
 
   const alertas: Alerta[] = [];
-  const pendingValidation = tarjeta.ultimoPeriodo ? isPeriodoPendienteValidacion(tarjeta.ultimoPeriodo) : false;
   const pendingCurrentPeriod = isPendientePeriodoActual(tarjeta);
   
-  if (pendingValidation) {
+  if (tarjeta.hasPendingValidation) {
     alertas.push({
       tipo: "periodoPendiente",
       mensaje: "Falta validar el periodo",

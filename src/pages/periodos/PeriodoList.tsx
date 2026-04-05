@@ -1,7 +1,7 @@
 import Timeline from "@/components/timeline/Timeline";
 import TimelineItem from "@/components/timeline/TimelineItem";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { dateToString, getFechaLimitePago, formatMXN, IsoToDate, isPeriodoPendienteValidacion, isPendientePeriodoActual } from "@/lib/utils";
+import { dateToString, getFechaLimitePago, formatMXN, IsoToDate, isPendientePeriodoActual } from "@/lib/utils";
 import { usePeriodoStore } from "@/stores/periodoStore";
 import { useTarjetaStore } from "@/stores/tarjetaStore";
 import type { Periodo } from "@/types/periodo";
@@ -32,6 +32,14 @@ export default function PeriodoList({ periodos }: Props) {
         const corte = DateTime.fromJSDate(fechaCorte);
 
         return hoy >= inicio && hoy <= corte;
+    }
+
+    // Valida si al dia de hoy un periodo está pendiente de validación
+    const isPeriodoPendienteValidacion = (periodo: Periodo): boolean => {
+      if (periodo.validado) return false;
+      const hoy = DateTime.now().startOf("day");
+      const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
+      return hoy > corte;
     }
 
     if(!tarjeta){

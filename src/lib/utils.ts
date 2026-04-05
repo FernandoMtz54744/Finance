@@ -42,14 +42,7 @@ export function formatMXN(cantidad: number){
   }).format(cantidad);
 }
 
-// Valida si al dia de hoy un periodo está pendiente de validación
-export function isPeriodoPendienteValidacion(periodo: Periodo): boolean {
-  if (periodo.validado) return false;
-  const hoy = DateTime.now().startOf("day");
-  const corte = DateTime.fromISO(periodo.fechaCorte).startOf("day");
-  return hoy > corte;
-}
-
+// Valida si falta agregar un periodo actual
 export function isPendientePeriodoActual(tarjeta: Tarjeta): boolean {
   const periodo = tarjeta?.ultimoPeriodo;
   if (!periodo?.fechaInicio || !periodo?.fechaCorte) return true;
