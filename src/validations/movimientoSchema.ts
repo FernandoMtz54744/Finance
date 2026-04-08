@@ -10,5 +10,5 @@ export const movimientoSchema = z.object({
     motivo: z.string()
         .min(1, "Ingresa un motivo")
         .max(50, "Ingresa un motivo más corto"),
-    idCategoria: z.number()
+    idCategoria: z.number({error: "Ingresa una categoría"})
 })

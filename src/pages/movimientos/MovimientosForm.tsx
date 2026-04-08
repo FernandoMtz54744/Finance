@@ -159,6 +159,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
               </Select>
             )}
           />
+          <FormError error={errors.idCategoria}></FormError>
       </div>
 
       <Button type="submit" className="col-span-12 md:col-span-1 hover:cursor-pointer">{modo === "editar" ? "Editar" : "Agregar"}</Button>

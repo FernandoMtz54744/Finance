@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import MovimientosForm from "./MovimientosForm"
 import { useTarjetaStore } from "@/stores/tarjetaStore"
 import { CustomIcon } from "@/components/icon/CustomIcon"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 type Props = {
     movimientos: Movimiento[],
@@ -55,10 +56,16 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
                 {movimiento.tipo === "t" && <ArrowLeftRight className="text-blue-400 ml-2"/>}
               </div>
               <div>{formatMXN(movimiento.cantidad)}</div>
-              {movimiento.categoria && <div title={movimiento.categoria.descripcion}>
-                <CustomIcon name={movimiento.categoria.icono} className="ml-2" size={"1em"}/>
-              </div>
-              }
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="ml-2">
+                      <CustomIcon name={movimiento.categoria.icono} size="1em"/>
+                    </div>
+                  </TooltipTrigger>
+                    <TooltipContent> {movimiento.categoria.descripcion} </TooltipContent>
+                  </Tooltip>
+              </TooltipProvider>
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent>

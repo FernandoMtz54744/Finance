@@ -3,6 +3,7 @@ import { ArrowLeftRight, BanknoteArrowUp } from "lucide-react"
 import type { MovimientoBalance } from "@/types/movimientoBalance"
 import { getTipoDescripcion } from "@/types/tarjeta"
 import { CustomIcon } from "@/components/icon/CustomIcon"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 type Props = {
     movimientos: MovimientoBalance[],
@@ -24,12 +25,16 @@ export default function MovimientosBalanceTable({movimientos, title, bgColor}: P
           {movimiento.tipo === "t" && <ArrowLeftRight className="text-blue-400 ml-2"/>}
         </div>
         <div>{formatMXN(movimiento.cantidad)}</div>
-        {
-          movimiento.categoria && <div title={movimiento.categoria.descripcion}>
-          <CustomIcon name={movimiento.categoria.icono} className="ml-2" size={"1em"}/>
-        </div>
-        }
-        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="ml-2">
+                <CustomIcon name={movimiento.categoria.icono} size="1em"/>
+              </div>
+            </TooltipTrigger>
+              <TooltipContent> {movimiento.categoria.descripcion} </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
       </div>
     ))}
     <div className={cn("flex flex-row justify-between mt-8 rounded-md py-2 px-4", bgColor)}>
