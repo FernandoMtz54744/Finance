@@ -1,16 +1,18 @@
 import { DatePicker } from "@/components/form/DatePicker";
 import FormError from "@/components/form/FormError";
+import { CustomIcon } from "@/components/icon/CustomIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getFechaLimitePago, IsoToDate } from "@/lib/utils";
-import { insertMovimiento } from "@/services/movimientoService";
-import type { MovimientoFormType } from "@/types/movimiento";
+import { getCategorias } from "@/services/categoriaService";
+import { insertMovimiento, updateMovimiento } from "@/services/movimientoService";
+import type { Movimiento, MovimientoFormType } from "@/types/movimiento";
 import type { Periodo } from "@/types/periodo";
 import type { Tarjeta } from "@/types/tarjeta";
 import { movimientoSchema } from "@/validations/movimientoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -18,19 +20,28 @@ import toast from "react-hot-toast";
 type Props = {
   idPeriodo: string,
   periodo: Periodo,
-  tarjeta: Tarjeta
+  tarjeta: Tarjeta,
+  modo: "crear" | "editar",
+  initialData?: Movimiento,
+  setOpen?: (open: boolean)=> void
 }
 
-export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
+export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, initialData, setOpen}: Props) {
 
   const queryClient = useQueryClient();
   
-
   const { register, handleSubmit, control, formState:{errors}, watch, setValue, reset } = useForm<MovimientoFormType>({
       resolver: zodResolver(movimientoSchema),
+      defaultValues: {
+        fecha: initialData?.fecha? IsoToDate(initialData.fecha) : undefined,
+        cantidad: initialData?.cantidad,
+        motivo: initialData?.motivo,
+        tipo: initialData?.tipo,
+        idCategoria: initialData?.categoria.idCategoria
+      }
   });
 
-  const mutation = useMutation({
+  const mutationInsert = useMutation({
     mutationFn: insertMovimiento,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movimientos', idPeriodo] });
@@ -42,9 +53,26 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
     },
   });
 
-  const onSubmit = (movimiento: MovimientoFormType)=>{    
-    mutation.mutate({movimiento: movimiento, idPeriodo: idPeriodo})
+  const mutationUpdate = useMutation({
+    mutationFn: updateMovimiento,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['movimientos', idPeriodo] });
+      reset();
+      toast.success("Movimiento editado con éxito");
+    },
+    onError: (e) => {
+      toast.error("No se pudo agregar el movimiento");
+      console.log(e.message);
+    }
+  });
 
+  const onSubmit = (movimiento: MovimientoFormType)=>{    
+    if( modo === "editar" && initialData){
+      setOpen && setOpen(false);
+      mutationUpdate.mutate({movimiento: movimiento, idMovimiento: initialData.id})
+    }else{
+      mutationInsert.mutate({movimiento: movimiento, idPeriodo: idPeriodo})
+    }
   }
 
   const cantidad = watch("cantidad");
@@ -66,6 +94,12 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
     }
   }, [tipo, setValue]);
 
+  const { data: categorias } = useQuery({
+    queryKey: ["categorias"],
+    queryFn: getCategorias,
+  });
+
+
   return (
     <div>
       <form className="grid grid-cols-12 md:gap-x-8 gap-y-4 my-4 mx-8" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -82,7 +116,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
           <FormError error={errors.cantidad}></FormError>
         </div>
 
-        <div className="col-span-12 md:col-span-4">
+        <div className="col-span-12 md:col-span-3">
           <Input type="text" placeholder="Motivo" {...register("motivo")} maxLength={50}/>
           <FormError error={errors.motivo}></FormError>
         </div>
@@ -103,11 +137,31 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta}: Props) {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-        )}/>
+          )}/>
         </div>
 
-        <Button type="submit" className="col-span-12 md:col-span-2 hover:cursor-pointer">Agregar</Button>
-        
+        <div className="col-span-12 md:col-span-2">
+          <Controller name="idCategoria" control={control} render={({ field }) => (
+              <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value ? String(field.value) : ""}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Categoría" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Categorías</SelectLabel>
+                      {categorias?.map((cat) => (
+                        <SelectItem key={cat.idCategoria} value={cat.idCategoria.toString()}>
+                          {cat.descripcion} <CustomIcon name={cat.icono} className="ml-2 text-white"/>
+                        </SelectItem>
+                      ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+      </div>
+
+      <Button type="submit" className="col-span-12 md:col-span-1 hover:cursor-pointer">{modo === "editar" ? "Editar" : "Agregar"}</Button>
       </form>
     </div>
   )

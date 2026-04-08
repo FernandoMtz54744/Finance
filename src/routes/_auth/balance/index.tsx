@@ -36,7 +36,7 @@ function RouteComponent() {
   const fechaInicio = useWatch({ control, name: "fechaInicio" });
   const fechaFin = useWatch({ control, name: "fechaFin" });
 
-  const [mostrarTransferencias, setMostrarTransferencias] = useState(true)
+  const [mostrarTransferencias, setMostrarTransferencias] = useState(false);
 
   const { data: movimientos, isLoading, isFetching ,error } = useQuery({
       queryKey: ['balance', dateToString(fechaInicio), dateToString(fechaFin)],

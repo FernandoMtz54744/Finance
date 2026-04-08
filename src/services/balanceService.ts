@@ -9,12 +9,17 @@ export const getMovimientosBalance = async (idUsuario: string, fechaInicio: stri
         tarjetas(
             nombre, tipo
         )
-    )`)
+    ),
+    categoria:categorias (
+        idCategoria,
+        descripcion,
+        icono
+      )`)
   .eq("periodos.tarjetas.usuario", idUsuario)
   .gte("fecha", fechaInicio)
-  .lte("fecha", fechaFin);
-  
+  .lte("fecha", fechaFin);  
   if (error) throw error;
+
 
   const movimientoBalance: MovimientoBalance[] = data.map(data => ({
     id: data.id,
@@ -25,7 +30,9 @@ export const getMovimientosBalance = async (idUsuario: string, fechaInicio: stri
     tarjeta: {
         nombre: data.periodos.tarjetas.nombre,
         tipo: data.periodos.tarjetas.tipo
-    }}
+    },
+    categoria: data.categoria
+  }
   ));
 
   return movimientoBalance;

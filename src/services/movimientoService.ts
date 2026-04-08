@@ -1,12 +1,38 @@
 import { supabase } from "@/lib/supabaseClient";
-import type { MovimientoFormType } from "@/types/movimiento";
+import type { Movimiento, MovimientoFormType } from "@/types/movimiento";
 import type { Rendimiento } from "@/types/rendimiento";
 import { DateTime } from "luxon";
 
-export const getMovimientos = async (idPeriodo: string) => {
-  const { data, error } = await supabase.from("movimientos").select("*").eq("idPeriodo", idPeriodo);
+export const getMovimientos = async (idPeriodo: string): Promise<Movimiento[]> => {
+  const { data, error } = await supabase
+    .from("movimientos")
+    .select(`
+      id,
+      idPeriodo,
+      fecha,
+      cantidad,
+      motivo,
+      tipo,
+      categoria:categorias (
+        idCategoria,
+        descripcion,
+        icono
+      )
+    `)
+    .eq("idPeriodo", idPeriodo);
+
   if (error) throw error;
-  return data;
+   return data.map((mov: any) => ({
+    id: mov.id,
+    idPeriodo: mov.idPeriodo,
+    fecha: mov.fecha,
+    cantidad: mov.cantidad,
+    motivo: mov.motivo,
+    tipo: mov.tipo,
+    categoria: Array.isArray(mov.categoria)
+      ? mov.categoria[0]
+      : mov.categoria
+  }));
 }
 
 export const insertMovimiento = async ({movimiento, idPeriodo}: {movimiento: MovimientoFormType, idPeriodo: string}) =>{
@@ -17,6 +43,19 @@ export const insertMovimiento = async ({movimiento, idPeriodo}: {movimiento: Mov
       .single();
     if(error) throw error;
     return data;
+}
+
+export const updateMovimiento = async ({movimiento, idMovimiento}: {movimiento: MovimientoFormType, idMovimiento: number}) =>{
+    const { data, error } = await supabase
+    .from('movimientos')
+    .update(movimiento)
+    .eq('id', idMovimiento)
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return data;
 }
 
 export const deleteMovimiento = async (id: number) =>{

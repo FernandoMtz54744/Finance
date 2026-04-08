@@ -9,5 +9,6 @@ export const movimientoSchema = z.object({
         .refine(val => val !== 0, { message: "Ingresa una cantidad" }),
     motivo: z.string()
         .min(1, "Ingresa un motivo")
-        .max(50, "Ingresa un motivo más corto")
+        .max(50, "Ingresa un motivo más corto"),
+    idCategoria: z.number()
 })
