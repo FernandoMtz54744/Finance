@@ -79,14 +79,6 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
   const tipo = watch("tipo");
 
   useEffect(() => {
-    if(!cantidad || cantidad >= 0){
-      setValue("tipo", "a")
-    }else{
-      setValue("tipo", 'c')
-    }
-  }, [cantidad, setValue]);
-
-  useEffect(() => {
     if(tipo === 'a' || tipo === 'r'){
       setValue("cantidad", Math.abs(cantidad));
     }else if(tipo === 'c'){
@@ -122,7 +114,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
         </div>
 
         <div className="col-span-12 md:col-span-2">
-          <Controller name="tipo" control={control} defaultValue="a" render={({ field }) => (
+          <Controller name="tipo" control={control} render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecciona un tipo" />
