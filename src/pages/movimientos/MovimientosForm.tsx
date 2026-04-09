@@ -143,7 +143,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
                     <SelectLabel>Categorías</SelectLabel>
                       {categorias?.map((cat) => (
                         <SelectItem key={cat.idCategoria} value={cat.idCategoria.toString()}>
-                          {cat.descripcion} <CustomIcon name={cat.icono} className="ml-2 text-white"/>
+                          {cat.descripcion} <CustomIcon name={cat.icono} className="text-white"/>
                         </SelectItem>
                       ))}
                   </SelectGroup>

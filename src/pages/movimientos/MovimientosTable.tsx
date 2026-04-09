@@ -68,17 +68,17 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
               </TooltipProvider>
           </div>
         </ContextMenuTrigger>
-        <ContextMenuContent>
+        {!periodo.validado && <ContextMenuContent>
           <ContextMenuItem className="hover:cursor-pointer"
               onClick={() => {setMovimientoSeleccionado(movimiento); setOpen(true);}}>
             Editar <Pencil className="ml-1 text-blue-500"/>
           </ContextMenuItem>
-          {!periodo.validado && <ContextMenuItem className="hover:cursor-pointer"
+          <ContextMenuItem className="hover:cursor-pointer"
               onClick={()=>deleteMovimientos.mutate(movimiento.id)}>
             Eliminar<Trash2 className="ml-1 text-red-500"/>
           </ContextMenuItem>
-          }
         </ContextMenuContent>
+        }
       </ContextMenu>
     ))}
     <div className={cn("flex flex-row justify-between mt-8 rounded-md py-2 px-4", bgColor)}>
