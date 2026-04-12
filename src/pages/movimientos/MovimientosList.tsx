@@ -1,7 +1,6 @@
 import type { Movimiento } from "@/types/movimiento"
 import MovimientosTable from "./MovimientosTable";
 import { useState } from "react";
-import { formatMXN } from "@/lib/utils";
 
 type Props = {
     movimientos: Movimiento[]

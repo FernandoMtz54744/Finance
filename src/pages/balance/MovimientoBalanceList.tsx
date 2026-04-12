@@ -1,12 +1,14 @@
 import { useState } from "react";
 import MovimientosBalanceTable from "./MovimientosBalanceTable";
 import type { MovimientoBalance } from "@/types/movimientoBalance";
+import PieCategoriasChart from "../estadisticas/graficas/PieCategoriasChart";
 
 type Props = {
-    movimientos: MovimientoBalance[]
+    movimientos: MovimientoBalance[],
+    graficasOnly: boolean
 }
 
-export default function MovimientosBalanceList({movimientos}: Props) {
+export default function MovimientosBalanceList({movimientos, graficasOnly}: Props) {
    
   const abonos = movimientos.filter(movimiento => movimiento.cantidad > 0);
   const cargos = movimientos.filter(movimiento => movimiento.cantidad < 0);
@@ -16,11 +18,23 @@ export default function MovimientosBalanceList({movimientos}: Props) {
     <>
     <div className="hidden md:grid grid-cols-12 px-8 gap-x-16 gap-y-16 my-8">
         <div className="col-span-6">
-           <MovimientosBalanceTable movimientos={abonos} title="Abonos" bgColor="bg-emerald-900" />
+          <div className="text-center text-2xl font-medium my-2">Abonos</div>
+           {!graficasOnly && <MovimientosBalanceTable movimientos={abonos} bgColor="bg-emerald-900" />}
+           <PieCategoriasChart data={abonos.map(mov => ({
+            idCategoria: mov.categoria.idCategoria, 
+            categoria: mov.categoria.descripcion, 
+            cantidad: mov.cantidad
+            }))} />
         </div>
 
         <div className="col-span-6">
-            <MovimientosBalanceTable movimientos={cargos} title="Cargos" bgColor="bg-red-900" />
+          <div className="text-center text-2xl font-medium my-2">Cargos</div>
+          {!graficasOnly && <MovimientosBalanceTable movimientos={cargos} bgColor="bg-red-900" />}
+          <PieCategoriasChart data={cargos.map(mov => ({
+            idCategoria: mov.categoria.idCategoria, 
+            categoria: mov.categoria.descripcion, 
+            cantidad: mov.cantidad
+            }))} />
         </div>
     </div>
     
@@ -38,10 +52,15 @@ export default function MovimientosBalanceList({movimientos}: Props) {
         </button>
       </div>
 
-      <MovimientosBalanceTable movimientos={tipoMovil === "abonos" ? abonos : cargos}
-        title={tipoMovil === "abonos" ? "Abonos" : "Cargos"}
+      {<div className="text-center text-2xl font-medium my-2">{tipoMovil === "abonos" ? "Abonos" : "Cargos"}</div>}
+      {!graficasOnly && <MovimientosBalanceTable movimientos={tipoMovil === "abonos" ? abonos : cargos}
         bgColor={tipoMovil === "abonos" ? "bg-emerald-900" : "bg-red-900"}
-      />
+      />}
+      <PieCategoriasChart data={(tipoMovil === "abonos" ? abonos : cargos).map(mov => ({
+        idCategoria: mov.categoria.idCategoria, 
+        categoria: mov.categoria.descripcion, 
+        cantidad: mov.cantidad
+        }))} />
     </div>
   </>
 )}

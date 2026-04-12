@@ -1,4 +1,4 @@
-import type { movimientoBalanceSchema } from "@/validations/movimientosBalanceSchema";
+import type { fechaInicioFinSchema } from "@/validations/fechaInicioFinSchema";
 import type z from "zod";
 import type { Categoria } from "./categoria";
 
@@ -15,4 +15,4 @@ export type MovimientoBalance = {
     categoria: Categoria
 }
 
-export type MovimientosBalanceFormType = z.infer<typeof movimientoBalanceSchema>;
+export type MovimientosBalanceFormType = z.infer<typeof fechaInicioFinSchema>;

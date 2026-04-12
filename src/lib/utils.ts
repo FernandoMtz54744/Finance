@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { DateTime } from "luxon";
-import type { Periodo } from "@/types/periodo";
 import type { Tarjeta } from "@/types/tarjeta";
 
 export function cn(...inputs: ClassValue[]) {

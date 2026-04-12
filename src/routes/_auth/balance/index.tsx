@@ -9,7 +9,7 @@ import LoadingPage from '@/pages/layouts/LoadingPage';
 import { getMovimientosBalance } from '@/services/balanceService';
 import { useAuthStore } from '@/stores/authStore';
 import type {  MovimientosBalanceFormType } from '@/types/movimientoBalance';
-import { movimientoBalanceSchema } from '@/validations/movimientosBalanceSchema';
+import { fechaInicioFinSchema } from '@/validations/fechaInicioFinSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router'
@@ -26,7 +26,7 @@ function RouteComponent() {
 
   const usuario = useAuthStore((state) => state.user);
   const { control, formState:{errors}, setValue } = useForm<MovimientosBalanceFormType>({
-    resolver: zodResolver(movimientoBalanceSchema),
+    resolver: zodResolver(fechaInicioFinSchema),
     defaultValues: {
     fechaInicio: DateTime.now().startOf("month").toJSDate(),
     fechaFin: DateTime.now().endOf("month").toJSDate(),
@@ -37,6 +37,7 @@ function RouteComponent() {
   const fechaFin = useWatch({ control, name: "fechaFin" });
 
   const [mostrarTransferencias, setMostrarTransferencias] = useState(false);
+  const [graficasOnly, setGraficasOnly] = useState(false);
 
   const { data: movimientos, isLoading, isFetching ,error } = useQuery({
       queryKey: ['balance', dateToString(fechaInicio), dateToString(fechaFin)],
@@ -93,13 +94,20 @@ function RouteComponent() {
       }
     </div>
 
+    {/* Switch mostrar movimientos  */}
     <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 mx-8 mt-4">
-      <Label htmlFor="count-transferencia" className='hover:cursor-pointer'>Mostrar transferencias</Label>
+      <Label htmlFor="count-graficas-only" className='hover:cursor-pointer'>Mostrar solo Gráficas</Label>
+      <Switch id="count-graficas-only" checked={graficasOnly} onCheckedChange={setGraficasOnly} className='hover:cursor-pointer'/>
+    </div>
+
+    {/* Switch transferencias  */}
+    <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 mx-8 mt-4">
+      <Label htmlFor="count-transferencia" className='hover:cursor-pointer'>Mostrar Transferencias</Label>
       <Switch id="count-transferencia" checked={mostrarTransferencias} onCheckedChange={setMostrarTransferencias} className='hover:cursor-pointer'/>
     </div>
 
     {/* Tabla */}
-    <MovimientosBalanceList movimientos={movimientosFilter}></MovimientosBalanceList>
+    <MovimientosBalanceList movimientos={movimientosFilter} graficasOnly={graficasOnly}></MovimientosBalanceList>
   </div>
   )
 }

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { PiggyBank, CreditCard, Banknote, CircleDollarSign, DiamondPercent,  Scale } from "lucide-react"
+import { PiggyBank, CreditCard, Banknote, CircleDollarSign, DiamondPercent,  Scale, ChartSpline } from "lucide-react"
 import { Link, useRouterState } from "@tanstack/react-router"
 import {
   Sidebar,
@@ -22,7 +22,8 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
     { title: "Efectivo", url: "/efectivo", icon: Banknote },
     { title: "Rendimientos", url: "/rendimientos", icon: DiamondPercent },
     { title: "Saldo", url: "/saldo", icon: CircleDollarSign },
-    { title: "Balance", url: "/balance", icon: Scale }
+    { title: "Balance", url: "/balance", icon: Scale },
+    { title: "Estadísticas", url: "/estadisticas", icon: ChartSpline }
   ]
 
   const sidebar = useSidebar();

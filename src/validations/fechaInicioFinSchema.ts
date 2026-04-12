@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const movimientoBalanceSchema = z.object({
+export const fechaInicioFinSchema = z.object({
     fechaInicio: z.date(),
     fechaFin: z.date()
 })
