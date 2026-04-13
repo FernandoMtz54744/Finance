@@ -18,8 +18,10 @@ export const getMovimientosBalance = async (idUsuario: string, fechaInicio: stri
   .eq("periodos.tarjetas.usuario", idUsuario)
   .gte("fecha", fechaInicio)
   .lte("fecha", fechaFin);  
+  
   if (error) throw error;
 
+  console.log(data);
 
   const movimientoBalance: MovimientoBalance[] = data.map(data => ({
     id: data.id,

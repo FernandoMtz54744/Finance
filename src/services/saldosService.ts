@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
 import type { Efectivo } from "@/types/efectivo";
+import type { Saldo } from "@/types/saldo";
 import type { Tarjeta } from "@/types/tarjeta";
 
 export const insertSaldo = async ({tarjetas,efectivo}: {tarjetas: Tarjeta[], efectivo: Efectivo}) =>{
@@ -15,7 +16,7 @@ export const insertSaldo = async ({tarjetas,efectivo}: {tarjetas: Tarjeta[], efe
     return data;
 }
 
-export const getSaldos = async (idUsuario: string) =>{
+export const getSaldos = async (idUsuario: string): Promise<Saldo[]> =>{
     const { data, error } = await supabase.from("saldos").select("*").eq("idUsuario", idUsuario).order("fecha", { ascending: false });
     if (error) throw error;
     return data;

@@ -1,6 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { DateTime } from "luxon";
 import { formatMXN } from "@/lib/utils";
+import type { ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 type Serie = {
   key: string;
@@ -82,7 +83,7 @@ export default function LineTimeChart({ data, series }: Props) {
           <YAxis domain={["dataMin", "dataMax"]} tickFormatter={(value) => formatMXN(Number(value))}/>
 
           <Tooltip labelFormatter={(value) => DateTime.fromMillis(value).toFormat("LLLL yyyy")}
-            formatter={(value: number) => formatMXN(Number(value))}/>
+            formatter={(value: ValueType | undefined) => value !== undefined ? formatMXN(Number(value)) : ""}/>
 
           <Legend />
 

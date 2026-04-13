@@ -40,7 +40,7 @@ export default function PieCategoriasChart({ data }: Props) {
         dataKey="value"
         nameKey="name"
         paddingAngle={5}
-        onClick={(data, index, e) => {
+        onClick={(_, index, e) => {
           e.stopPropagation();
           setActiveIndex(prev => (prev === index ? null : index));
         }}

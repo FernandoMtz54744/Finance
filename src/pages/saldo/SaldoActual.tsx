@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { dateToString, formatMXN, IsoToDate } from "@/lib/utils"
+import { formatMXN } from "@/lib/utils"
 import type { Efectivo } from "@/types/efectivo"
 import { getTipoDescripcion, type Tarjeta } from "@/types/tarjeta"
 

@@ -9,6 +9,9 @@ import { getLastEfectivo } from '@/services/efectivoService';
 import { getSaldos, insertSaldo } from '@/services/saldosService';
 import { getTarjetasConUltimoPeriodo } from '@/services/tarjetaService';
 import { useAuthStore } from '@/stores/authStore';
+import type { Efectivo } from '@/types/efectivo';
+import type { Saldo } from '@/types/saldo';
+import type { Tarjeta } from '@/types/tarjeta';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router'
 import { Camera } from 'lucide-react';
@@ -36,10 +39,11 @@ function RouteComponent() {
     enabled: !!usuario
   });
 
-  const { data: saldos, isLoading: isLoadingSaldos, error: errorSaldos } = useQuery({
+  const { data: saldos, isLoading: isLoadingSaldos, error: errorSaldos } = useQuery<Saldo[]>({
     queryKey: ['saldos'],
     queryFn: ()=> getSaldos(usuario!.id),
-    enabled: !!usuario
+    enabled: !!usuario,
+    initialData: []
   });
 
   const mutation = useMutation({
@@ -68,7 +72,7 @@ function RouteComponent() {
       const efectivo = calcularEfectivo(saldo.efectivo);
 
       return {
-        fecha: DateTime.fromISO(saldo.fecha).toISODate(),
+        fecha: DateTime.fromISO(saldo.fecha).toISODate() ?? "",
         efectivo,
         tarjetas: totalTarjetas,
         total: efectivo + totalTarjetas,
@@ -85,7 +89,7 @@ function RouteComponent() {
     const efectivoTotal = calcularEfectivo(efectivo.denominaciones);
 
     return {
-      fecha: DateTime.now().toISODate(), // 👈 hoy
+      fecha: DateTime.now().toISODate(),
       efectivo: efectivoTotal,
       tarjetas: totalTarjetas,
       total: efectivoTotal + totalTarjetas,
@@ -93,13 +97,12 @@ function RouteComponent() {
   }
 
 
-  function buildChartData(saldos: any[], tarjetas: any[], efectivo: any) {
+  function buildChartData(saldos: Saldo[], tarjetas: Tarjeta[], efectivo: Efectivo) {
   const historial = transformHistorial(saldos);
   const actual = transformActual(tarjetas, efectivo);
 
   const merged = [...historial, actual];
 
-  // 🔥 evitar duplicados por mismo mes (opcional pero recomendado)
   const map = new Map<string, any>();
 
   merged.forEach((item) => {
