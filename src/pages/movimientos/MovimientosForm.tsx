@@ -66,7 +66,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
     }
   });
 
-  const onSubmit = (movimiento: MovimientoFormType)=>{    
+  const onSubmit = (movimiento: MovimientoFormType)=>{   
     if( modo === "editar" && initialData){
       setOpen && setOpen(false);
       mutationUpdate.mutate({movimiento: movimiento, idMovimiento: initialData.id})
@@ -115,7 +115,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
 
         <div className="col-span-12 md:col-span-2">
           <Controller name="tipo" control={control} render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select onValueChange={field.onChange} value={field.value ? String(field.value) : ""}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecciona un tipo" />
                 </SelectTrigger>
@@ -130,6 +130,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
                 </SelectContent>
             </Select>
           )}/>
+          <FormError error={errors.tipo}></FormError>
         </div>
 
         <div className="col-span-12 md:col-span-2">
