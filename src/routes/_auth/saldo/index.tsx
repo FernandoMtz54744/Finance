@@ -1,5 +1,6 @@
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
 import { Separator } from '@/components/ui/separator';
+import LineTimeChart from '@/pages/estadisticas/graficas/LineTimeChart';
 import ErrorPage from '@/pages/layouts/ErrorPage';
 import LoadingPage from '@/pages/layouts/LoadingPage';
 import SaldoActual from '@/pages/saldo/SaldoActual';
@@ -11,6 +12,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router'
 import { Camera } from 'lucide-react';
+import { DateTime } from 'luxon';
 import toast from 'react-hot-toast';
 
 export const Route = createFileRoute('/_auth/saldo/')({
@@ -56,6 +58,64 @@ function RouteComponent() {
   const error = errorEfectivo || errorTarjetas || errorSaldos;
   if(error) return <ErrorPage error={error}/>
 
+  function calcularEfectivo(denominaciones: Record<string, number>) {
+    return Object.entries(denominaciones).reduce((sum, [valor, cantidad]) => sum + Number(valor) * cantidad, 0);
+  }
+
+  function transformHistorial(saldos: any[]) {
+    return saldos.map((saldo) => {
+      const totalTarjetas = saldo.tarjetas.reduce((sum: number, t: any) => sum + t.saldoFinal,0);
+      const efectivo = calcularEfectivo(saldo.efectivo);
+
+      return {
+        fecha: DateTime.fromISO(saldo.fecha).toISODate(),
+        efectivo,
+        tarjetas: totalTarjetas,
+        total: efectivo + totalTarjetas,
+      };
+    });
+  }
+
+  function transformActual(tarjetas: any[], efectivo: any) {
+    const totalTarjetas = tarjetas.reduce(
+      (sum, t) => sum + (t.ultimoPeriodo?.saldoFinal || 0),
+      0
+    );
+
+    const efectivoTotal = calcularEfectivo(efectivo.denominaciones);
+
+    return {
+      fecha: DateTime.now().toISODate(), // 👈 hoy
+      efectivo: efectivoTotal,
+      tarjetas: totalTarjetas,
+      total: efectivoTotal + totalTarjetas,
+    };
+  }
+
+
+  function buildChartData(saldos: any[], tarjetas: any[], efectivo: any) {
+  const historial = transformHistorial(saldos);
+  const actual = transformActual(tarjetas, efectivo);
+
+  const merged = [...historial, actual];
+
+  // 🔥 evitar duplicados por mismo mes (opcional pero recomendado)
+  const map = new Map<string, any>();
+
+  merged.forEach((item) => {
+    const mes = item.fecha.slice(0, 7); // YYYY-MM
+    map.set(mes, item); // el último (actual) sobrescribe
+  });
+
+  return Array.from(map.values()).sort(
+    (a, b) =>
+      DateTime.fromISO(a.fecha).toMillis() -
+      DateTime.fromISO(b.fecha).toMillis()
+  );
+}
+
+  const chartData = buildChartData(saldos, tarjetas, efectivo);
+
   return <>
     <SaldoActual tarjetas={tarjetas ?? []} efectivo={efectivo ?? {}}/>
     <Separator className='my-8'/>
@@ -64,5 +124,12 @@ function RouteComponent() {
       description='¿Deseas guardar el estado actual del saldo?'>
       <Camera className="fixed right-6 bottom-6 hover:cursor-pointer size-8"/>
     </ConfirmDialog>
+    <LineTimeChart
+      data={chartData}
+      series={[
+        { key: "tarjetas", color: "#3B82F6", name: "Tarjetas" },
+        { key: "total", color: "#22C55E", name: "Total" },
+      ]}
+/>
   </>
 }
