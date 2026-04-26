@@ -48,7 +48,8 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
     {movimientos.sort((a,b) => IsoToDate(a.fecha).getTime() - IsoToDate(b.fecha).getTime()).map((movimiento, i) => (
       <ContextMenu>
         <ContextMenuTrigger>
-          <div className="flex flex-row justify-between items-center border-b-2 border-b-gray-850 px-4 py-2 selec select-none" key={i}>
+          {/* DESKTOP */}
+          <div className="hidden md:flex flex-row justify-between items-center border-b-2 border-b-gray-850 px-4 py-2 selec select-none" key={i}>
               <div>{dateToString(IsoToDate(movimiento.fecha))}</div>
               <div className="text-left w-full pl-4 flex flex-row">
                 {movimiento.motivo} 
@@ -67,6 +68,36 @@ export default function MovimientosTable({movimientos, title, bgColor}: Props) {
                   </Tooltip>
               </TooltipProvider>
           </div>
+          {/* MOBILE */}
+          <div className="md:hidden border-b border-b-gray-800 px-4 py-3 select-none">
+            <div className="flex justify-between items-start gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <CustomIcon name={movimiento.categoria.icono} size="1em"/>
+                  <span className="font-medium truncate">{movimiento.motivo}</span>
+
+                  {movimiento.tipo === "r" && (
+                    <BanknoteArrowUp className="text-emerald-400 h-4 w-4 shrink-0" />
+                  )}
+
+                  {movimiento.tipo === "t" && (
+                    <ArrowLeftRight className="text-blue-400 h-4 w-4 shrink-0" />
+                  )}
+                </div>
+
+                <div className="text-sm text-gray-400 mt-1">
+                  {dateToString(IsoToDate(movimiento.fecha))}
+                  {" • "}
+                  {movimiento.categoria.descripcion}
+                </div>
+              </div>
+
+              <div className="text-right font-semibold whitespace-nowrap">
+                {formatMXN(movimiento.cantidad)}
+              </div>
+            </div>
+          </div>
+          
         </ContextMenuTrigger>
         {!periodo.validado && <ContextMenuContent>
           <ContextMenuItem className="hover:cursor-pointer"
