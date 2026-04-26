@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MovimientosBalanceTable from "./MovimientosBalanceTable";
 import type { MovimientoBalance } from "@/types/movimientoBalance";
-import PieCategoriasChart from "../estadisticas/graficas/PieCategoriasChart";
+import PieCategoriasChart from "../graficas/PieCategoriasChart";
 
 type Props = {
     movimientos: MovimientoBalance[],

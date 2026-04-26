@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { formatMXN } from "@/lib/utils"
 import type { Rendimiento } from "@/types/rendimiento"
 import { DateTime } from "luxon"
-import LineTimeChart from "../estadisticas/graficas/LineTimeChart"
+import LineTimeChart from "../graficas/LineTimeChart"
 
 type Params = {
     rendimientosPorMes: Record<string, Rendimiento[]>

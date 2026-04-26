@@ -21,8 +21,6 @@ export const getMovimientosBalance = async (idUsuario: string, fechaInicio: stri
   
   if (error) throw error;
 
-  console.log(data);
-
   const movimientoBalance: MovimientoBalance[] = data.map(data => ({
     id: data.id,
     fecha: data.fecha,

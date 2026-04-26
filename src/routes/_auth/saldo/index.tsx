@@ -1,6 +1,6 @@
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
 import { Separator } from '@/components/ui/separator';
-import LineTimeChart from '@/pages/estadisticas/graficas/LineTimeChart';
+import LineTimeChart from '@/pages/graficas/LineTimeChart';
 import ErrorPage from '@/pages/layouts/ErrorPage';
 import LoadingPage from '@/pages/layouts/LoadingPage';
 import SaldoActual from '@/pages/saldo/SaldoActual';

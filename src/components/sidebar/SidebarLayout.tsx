@@ -22,8 +22,7 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
     { title: "Efectivo", url: "/efectivo", icon: Banknote },
     { title: "Rendimientos", url: "/rendimientos", icon: DiamondPercent },
     { title: "Saldo", url: "/saldo", icon: CircleDollarSign },
-    { title: "Balance", url: "/balance", icon: Scale },
-    { title: "Estadísticas", url: "/estadisticas", icon: ChartSpline }
+    { title: "Balance", url: "/balance", icon: Scale }
   ]
 
   const sidebar = useSidebar();
