@@ -1,8 +1,9 @@
-import { COLORS, type PieCategoriasChartType } from "@/types/graficas";
+import { type PieCategoriasChartType } from "@/types/graficas";
 import { Pie, PieChart, Cell, Label } from "recharts";
 import { formatMXN } from "@/lib/utils";
 import { useSelectedCategoriaStore } from "@/stores/selectedCategoriaStore";
 import { useEffect } from "react";
+import { COLORS } from "@/types/categoria";
 
 type Props = {
   data: PieCategoriasChartType;

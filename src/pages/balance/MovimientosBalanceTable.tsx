@@ -4,7 +4,7 @@ import type { MovimientoBalance } from "@/types/movimientoBalance"
 import { getTipoDescripcion } from "@/types/tarjeta"
 import { CustomIcon } from "@/components/icon/CustomIcon"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { COLORS } from "@/types/graficas"
+import { COLORS } from "@/types/categoria"
 import { useSelectedCategoriaStore } from "@/stores/selectedCategoriaStore"
 
 type Props = {
