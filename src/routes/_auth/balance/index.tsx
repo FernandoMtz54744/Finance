@@ -8,6 +8,7 @@ import ErrorPage from '@/pages/layouts/ErrorPage';
 import LoadingPage from '@/pages/layouts/LoadingPage';
 import { getMovimientosBalance } from '@/services/balanceService';
 import { useAuthStore } from '@/stores/authStore';
+import { useSelectedCategoriaStore } from '@/stores/selectedCategoriaStore';
 import type {  MovimientosBalanceFormType } from '@/types/movimientoBalance';
 import { fechaInicioFinSchema } from '@/validations/fechaInicioFinSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,6 +26,8 @@ export const Route = createFileRoute('/_auth/balance/')({
 function RouteComponent() {
 
   const usuario = useAuthStore((state) => state.user);
+  const resetSelectedCategoria = useSelectedCategoriaStore((state) => state.resetSelectedCategoria);
+
   const { control, formState:{errors}, setValue } = useForm<MovimientosBalanceFormType>({
     resolver: zodResolver(fechaInicioFinSchema),
     defaultValues: {
@@ -68,7 +71,7 @@ function RouteComponent() {
     }, 0);
 
   return (
-  <div>
+  <div onClick={resetSelectedCategoria}>
     {/* Fechas */}
     <div className='grid grid-cols-12 gap-6 mx-6'>
       <div className="col-span-6 md:col-span-6">

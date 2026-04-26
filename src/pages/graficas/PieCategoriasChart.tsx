@@ -1,7 +1,8 @@
-import { useState } from "react";
 import { COLORS, type PieCategoriasChartType } from "@/types/graficas";
 import { Pie, PieChart, Cell, Label } from "recharts";
 import { formatMXN } from "@/lib/utils";
+import { useSelectedCategoriaStore } from "@/stores/selectedCategoriaStore";
+import { useEffect } from "react";
 
 type Props = {
   data: PieCategoriasChartType;
@@ -14,7 +15,7 @@ type PieCategoria = {
 };
 
 export default function PieCategoriasChart({ data }: Props) {
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const { selectedCategoriaId, setSelectedCategoriaId, resetSelectedCategoria } = useSelectedCategoriaStore();
 
     const dataChart: PieCategoria[] = Object.values(
         data.reduce((acc, item) => {
@@ -28,11 +29,17 @@ export default function PieCategoriasChart({ data }: Props) {
 
     dataChart.sort((a, b) => b.value - a.value);
 
-    const activeItem = activeIndex !== null ? dataChart[activeIndex] : null;
+    const activeItem = selectedCategoriaId !== null ? dataChart.find(item => item.id === selectedCategoriaId) ?? null : null;
     const total = dataChart.reduce((sum, item) => sum + item.value, 0);
 
+    useEffect(() => {
+      return () => {
+        resetSelectedCategoria();
+      };
+    }, [resetSelectedCategoria]);
+
   return (
-    <PieChart style={{ width: "100%", aspectRatio: 2 }} onClick={() => setActiveIndex(null)}>
+    <PieChart style={{ width: "100%", aspectRatio: 2 }} onClick={() => setSelectedCategoriaId(null)}>
       <Pie 
         data={dataChart}
         innerRadius="50%"
@@ -40,22 +47,26 @@ export default function PieCategoriasChart({ data }: Props) {
         dataKey="value"
         nameKey="name"
         paddingAngle={5}
-        onClick={(_, index, e) => {
+        onClick={(entry: { payload?: PieCategoria }, _, e) => {
           e.stopPropagation();
-          setActiveIndex(prev => (prev === index ? null : index));
+          const categoria = entry.payload;
+          if (!categoria) return;
+          setSelectedCategoriaId(
+            selectedCategoriaId === categoria.id ? null : categoria.id
+          );
         }}
         labelLine={false}
-        label={(entry) => activeIndex === null ? entry.name : ""}
+        label={(entry) => selectedCategoriaId  === null ? entry.name : ""}
         isAnimationActive={false}
       >
         {dataChart.map((item, index) => {
-          const isActive = activeIndex === index;
+          const isActive = item.id === selectedCategoriaId;
 
           return (
             <Cell
               key={index}
               fill={COLORS[item.id-1]}
-              opacity={activeIndex === null || isActive ? 1 : 0.3}
+              opacity={selectedCategoriaId === null || isActive ? 1 : 0.3}
               stroke={isActive ? "#000" : "none"}
               strokeWidth={isActive ? 2 : 0}
               style={{ cursor: "pointer" }} 
