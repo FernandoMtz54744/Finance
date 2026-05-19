@@ -126,6 +126,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
                         <SelectItem value="c">Cargo</SelectItem>
                         <SelectItem value="r">Rendimiento</SelectItem>
                         <SelectItem value="t">Transferencia (entre cuentas)</SelectItem>
+                        <SelectItem value="t">Pago de TDC</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
