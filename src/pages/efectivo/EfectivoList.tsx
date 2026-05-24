@@ -1,16 +1,19 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { dateToString, formatMXN, IsoToDate } from "@/lib/utils";
 import type { Efectivo } from "@/types/efectivo";
+import { useState } from "react"
 
 type Props = {
     data: Efectivo[]
 }
 
 export default function EfectivoList({data}: Props) {
+    const [visibleCount, setVisibleCount] = useState(5);
   return (
-    <div className="flex flex-row justify-center px-8">
+    <>
+    <div className="flex flex-row justify-center px-8 mb-4">
         <Accordion collapsible type="single" className="w-full">
-            {data.map((efectivo, i) => {
+            {data.slice(0, visibleCount).map((efectivo, i) => {
             const total = Object.entries(efectivo.denominaciones ?? {}).reduce((sum, [den, cantidad]) => sum + Number(den) * cantidad, 0)
             return  <AccordionItem value={`efectivo-${i}`} key={i}>
                         <AccordionTrigger className="hover:cursor-pointer">
@@ -35,5 +38,15 @@ export default function EfectivoList({data}: Props) {
             )}
         </Accordion>
     </div>
+    {visibleCount < data.length && (
+            <div className="flex justify-center mb-8">
+                <button onClick={() => setVisibleCount(prev => prev + 5)}
+                    className="px-4 py-2 rounded-md bg-emerald-800 text-white hover:cursor-pointer"
+                >
+                    Ver más
+                </button>
+            </div>
+        )}
+    </>
   )
 }

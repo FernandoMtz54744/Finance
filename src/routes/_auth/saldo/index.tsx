@@ -127,12 +127,16 @@ function RouteComponent() {
       description='¿Deseas guardar el estado actual del saldo?'>
       <Camera className="fixed right-6 bottom-6 hover:cursor-pointer size-8"/>
     </ConfirmDialog>
-    <LineTimeChart
-      data={chartData}
-      series={[
-        { key: "tarjetas", color: "#3B82F6", name: "Tarjetas" },
-        { key: "total", color: "#22C55E", name: "Total" },
-      ]}
-/>
+
+    <div className="px-50 my-8">
+      <h2 className="text-center text-3xl">Histórico</h2>
+      <LineTimeChart
+        data={chartData}
+        series={[
+          { key: "tarjetas", color: "#3B82F6", name: "Tarjetas" },
+          { key: "total", color: "#22C55E", name: "Total" },
+        ]}
+      />
+    </div>
   </>
 }

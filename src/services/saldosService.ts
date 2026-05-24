@@ -21,3 +21,13 @@ export const getSaldos = async (idUsuario: string): Promise<Saldo[]> =>{
     if (error) throw error;
     return data;
 }
+
+export const getLastSaldo = async (idUsuario: string): Promise<Saldo> =>{
+    const { data, error } = await supabase.from("saldos").select("*")
+        .eq("idUsuario", idUsuario)
+        .order("fecha", { ascending: false })
+        .limit(1)
+        .single();
+    if (error) throw error;
+    return data;
+}

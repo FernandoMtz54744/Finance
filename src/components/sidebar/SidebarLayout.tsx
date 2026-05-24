@@ -14,14 +14,33 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { SidebarUser } from "./SidebarUser"
+import { getLastSaldo } from "@/services/saldosService"
+import { cn } from "@/lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import { useAuthStore } from "@/stores/authStore"
+import { DateTime } from "luxon"
 
 export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const { user } = useAuthStore((state) => state);
+  const { data: lastSaldo } = useQuery({
+    queryKey: ["lastSaldo", user?.id],
+    queryFn: () => getLastSaldo(user!.id),
+    enabled: !!user?.id
+  });
+
+  //Calcula si hay un saldo registrado este mes (muestra advertencia si no y está en los 10 últimos días del mes)
+  const now = DateTime.now();
+  const isLast10Days = now.day > (now.daysInMonth - 10);
+  const saldoDate = lastSaldo ? DateTime.fromISO(lastSaldo.fecha): null;
+  const hasCurrentMonthSaldo = saldoDate?.hasSame(now, "month");
+  const shouldWarnSaldo = isLast10Days && !hasCurrentMonthSaldo;
 
   const items = [
     { title: "Tarjetas", url: "/tarjetas", icon: CreditCard },
     { title: "Efectivo", url: "/efectivo", icon: Banknote },
     { title: "Rendimientos", url: "/rendimientos", icon: DiamondPercent },
-    { title: "Saldo", url: "/saldo", icon: CircleDollarSign },
+    { title: "Saldo", url: "/saldo", icon: CircleDollarSign,  warning: shouldWarnSaldo },
     { title: "Balance", url: "/balance", icon: Scale }
   ]
 
@@ -57,8 +76,9 @@ export function SidebarLayout({ ...props }: React.ComponentProps<typeof Sidebar>
           <SidebarMenu>
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild className={item.url === currentPath ? "bg-muted font-semibold" : ""} tooltip={item.title}>
-                  <Link to={item.url} className="flex items-center gap-3" onClick={()=> closeSidebar}>
+                <SidebarMenuButton asChild className={cn(item.url === currentPath && "bg-muted font-semibold", item.warning && "border border-amber-500/30 text-amber-400")} 
+                  tooltip={item.title}>
+                  <Link to={item.url} className="flex items-center gap-3" onClick={closeSidebar}>
                     {item.icon && ( <item.icon className="size-4 shrink-0" />)}
                     <span className="truncate">{item.title}</span>
                   </Link>

@@ -2,22 +2,26 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { dateToString, formatMXN, IsoToDate } from "@/lib/utils"
 import type { Saldo } from "@/types/saldo"
 import { getTipoDescripcion } from "@/types/tarjeta"
+import { useState } from "react"
 
 type Props = {
     saldos: Saldo[]
 }
 
 export default function SaldoList({saldos}: Props) {
+    const [visibleCount, setVisibleCount] = useState(5);
+
   return (
+    <>
     <Accordion  collapsible type="single" className="w-full px-8">
-        {saldos.map(saldo => {
+        {saldos.slice(0, visibleCount).map(saldo => {
             const totalTarjetas = saldo.tarjetas.reduce((suma, tarjeta)=>{
                 return suma + (tarjeta.saldoFinal);
             }, 0);
 
             const totalEfectivo = Object.entries(saldo.efectivo ?? {}).reduce((sum, [den, cantidad]) => sum + Number(den) * cantidad, 0);
 
-            return (<AccordionItem value={saldo.id}>
+            return (<AccordionItem value={saldo.id} key={saldo.id}>
                 <AccordionTrigger className="hover:cursor-pointer hover:no-underline">
                         <div className="flex flex-row justify-between w-full">
                             <div>{dateToString(IsoToDate(saldo.fecha))}</div>
@@ -39,18 +43,27 @@ export default function SaldoList({saldos}: Props) {
                             <div>Efectivo</div>
                             <div>{formatMXN(totalEfectivo)}</div>
                         </div>
-                        {Object.entries(saldo.efectivo).map(([denominacion, cantidad], i) => 
+                        {Object.entries(saldo.efectivo ?? {}).map(([denominacion, cantidad], i) => 
                             <div className="flex flex-row justify-between my-1 pl-4" key={i}>
                                 <div>${denominacion}<span className="text-emerald-500 text-xs">&nbsp;x{cantidad}</span>:</div>
                                 <div>{formatMXN(Number(denominacion) * cantidad)}</div>
                             </div>
                         )}
                     </AccordionContent>
-
             </AccordionItem>
 
             )}
         )}
     </Accordion>
+    {visibleCount < saldos.length && (
+        <div className="flex justify-center mt-4">
+            <button onClick={() => setVisibleCount(prev => prev + 5)}
+                className="px-4 py-2 rounded-md bg-emerald-800 text-white hover:cursor-pointer"
+            >
+                Ver más
+            </button>
+        </div>
+    )}
+    </>
   )
 }

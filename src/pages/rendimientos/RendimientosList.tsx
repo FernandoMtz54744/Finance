@@ -3,12 +3,15 @@ import { formatMXN } from "@/lib/utils"
 import type { Rendimiento } from "@/types/rendimiento"
 import { DateTime } from "luxon"
 import LineTimeChart from "../graficas/LineTimeChart"
+import { useState } from "react"
 
 type Params = {
     rendimientosPorMes: Record<string, Rendimiento[]>
 }
 
 export default function RendimientosList({rendimientosPorMes}: Params) {
+
+    const [visibleCount, setVisibleCount] = useState(5);
 
     const transformToChart = (data: Record<string, any[]>) => {
         return Object.entries(data)
@@ -31,6 +34,7 @@ export default function RendimientosList({rendimientosPorMes}: Params) {
     <Accordion collapsible type="single" className="w-full px-6">
         {Object.entries(rendimientosPorMes)
         .sort(([mesA], [mesB]) => mesB.localeCompare(mesA))
+        .slice(0, visibleCount)
         .map(([mes, rendimientos]) => {
             const totalMes = rendimientos.reduce((sum, r) => sum + r.cantidad, 0);
             return( 
@@ -52,6 +56,18 @@ export default function RendimientosList({rendimientosPorMes}: Params) {
             </AccordionItem>
     )})}
     </Accordion>
+    {visibleCount < Object.entries(rendimientosPorMes).length && (
+        <div className="flex justify-center mt-4">
+            <button onClick={() => setVisibleCount(prev => prev + 5)}
+                className="px-4 py-2 rounded-md bg-emerald-800 text-white hover:cursor-pointer"
+            >
+                Ver más
+            </button>
+        </div>
+    )}
+    <div className="px-50 my-8">
+        <h2 className="text-center text-3xl">Histórico</h2>
         <LineTimeChart data={charData} series={[{ key: "rendimientos", color: "#22C55E", name: "Rendimientos" }]}/>
+    </div>
     </>
 )}
