@@ -1,5 +1,6 @@
 export type PieCategoriasChartType = {
     idCategoria: number,
-    categoria: string;
-    cantidad: number;
+    categoria: string,
+    cantidad: number,
+    color?: string
 }[];

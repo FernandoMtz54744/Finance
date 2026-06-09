@@ -122,14 +122,14 @@ function RouteComponent() {
   return <>
     <SaldoActual tarjetas={tarjetas ?? []} efectivo={efectivo ?? {}}/>
     <Separator className='my-8'/>
+    <h2 className="text-center text-3xl">Histórico</h2>
     <SaldoList saldos={saldos ?? []}/>
     <ConfirmDialog title='Guardar saldo actual' confirmText='Aceptar' cancelText='Cancelar' confirmAction={()=> mutation.mutate({tarjetas,efectivo})}
       description='¿Deseas guardar el estado actual del saldo?'>
       <Camera className="fixed right-6 bottom-6 hover:cursor-pointer size-8"/>
     </ConfirmDialog>
 
-    <div className="px-50 my-8">
-      <h2 className="text-center text-3xl">Histórico</h2>
+    <div className="md:px-50 my-8">
       <LineTimeChart
         data={chartData}
         series={[

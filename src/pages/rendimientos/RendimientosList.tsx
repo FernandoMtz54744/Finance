@@ -65,7 +65,7 @@ export default function RendimientosList({rendimientosPorMes}: Params) {
             </button>
         </div>
     )}
-    <div className="px-50 my-8">
+    <div className="md:px-50 my-8">
         <h2 className="text-center text-3xl">Histórico</h2>
         <LineTimeChart data={charData} series={[{ key: "rendimientos", color: "#22C55E", name: "Rendimientos" }]}/>
     </div>

@@ -2,6 +2,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { formatMXN } from "@/lib/utils"
 import type { Efectivo } from "@/types/efectivo"
 import { getTipoDescripcion, type Tarjeta } from "@/types/tarjeta"
+import PieCategoriasChart from "../graficas/PieCategoriasChart"
+import type { PieCategoriasChartType } from "@/types/graficas"
 
 type Params = {
     tarjetas: Tarjeta[],
@@ -15,6 +17,23 @@ export default function SaldoActual({ tarjetas, efectivo }: Params) {
     }, 0)
 
     const totalEfectivo = Object.entries(efectivo.denominaciones ?? {}).reduce((sum, [den, cantidad]) => sum + Number(den) * cantidad, 0)
+
+    //Se ajustan datos para gráfica
+    const dataPie: PieCategoriasChartType = tarjetas
+    .filter(tarjeta => tarjeta.ultimoPeriodo && tarjeta.ultimoPeriodo.saldoFinal > 0)
+    .map((tarjeta, i) => ({
+        idCategoria: i,
+        cantidad: tarjeta.ultimoPeriodo?.saldoFinal || 0,
+        categoria: tarjeta.nombre,
+        color: tarjeta.color
+    })) 
+
+    dataPie.push({
+        cantidad: totalEfectivo,
+        categoria: "Efectivo",
+        idCategoria: dataPie.length,
+        color: "#008F39"
+    })
 
     return (
         <div className="px-8">
@@ -61,6 +80,10 @@ export default function SaldoActual({ tarjetas, efectivo }: Params) {
             <div className="flex flex-row justify-between bg-emerald-900 p-2 rounded-md mt-4 font-semibold">
                 <div>Total </div>
                 <div>{formatMXN(totalTarjetas+totalEfectivo)}</div>
+            </div>
+
+            <div className="md:px-10 md:text-2xl">
+                <PieCategoriasChart data={dataPie} className="md:h-[35vw]"/>
             </div>
         </div>
     )

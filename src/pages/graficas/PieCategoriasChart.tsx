@@ -1,27 +1,30 @@
 import { type PieCategoriasChartType } from "@/types/graficas";
 import { Pie, PieChart, Cell, Label } from "recharts";
-import { formatMXN } from "@/lib/utils";
+import { cn, formatMXN } from "@/lib/utils";
 import { useSelectedCategoriaStore } from "@/stores/selectedCategoriaStore";
 import { useEffect } from "react";
 import { COLORS } from "@/types/categoria";
 
 type Props = {
-  data: PieCategoriasChartType;
+  data: PieCategoriasChartType, 
+  className?: string
 };
 
 type PieCategoria = {
     id: number,
-    name: string;
-    value: number;
+    name: string,
+    value: number,
+    color: string
 };
 
-export default function PieCategoriasChart({ data }: Props) {
+export default function PieCategoriasChart({ data, className }: Props) {
     const { selectedCategoriaId, setSelectedCategoriaId, resetSelectedCategoria } = useSelectedCategoriaStore();
 
     const dataChart: PieCategoria[] = Object.values(
         data.reduce((acc, item) => {
         if (!acc[item.idCategoria]) {
-            acc[item.idCategoria] = { id: item.idCategoria, name: item.categoria, value: 0 };
+            acc[item.idCategoria] = { id: item.idCategoria, name: item.categoria, value: 0, 
+              color: item.color || COLORS[item.idCategoria-1]};
         }
         acc[item.idCategoria].value += Math.abs(item.cantidad);;
         return acc;
@@ -40,7 +43,7 @@ export default function PieCategoriasChart({ data }: Props) {
     }, [resetSelectedCategoria]);
 
   return (
-    <PieChart style={{ width: "100%", aspectRatio: 2 }} onClick={() => setSelectedCategoriaId(null)}>
+    <PieChart style={{ width: "100%", aspectRatio: 2 }} onClick={() => setSelectedCategoriaId(null)} className={cn(className)}>
       <Pie 
         data={dataChart}
         innerRadius="50%"
@@ -66,7 +69,7 @@ export default function PieCategoriasChart({ data }: Props) {
           return (
             <Cell
               key={index}
-              fill={COLORS[item.id-1]}
+              fill={ item.color }
               opacity={selectedCategoriaId === null || isActive ? 1 : 0.3}
               stroke={isActive ? "#000" : "none"}
               strokeWidth={isActive ? 2 : 0}
