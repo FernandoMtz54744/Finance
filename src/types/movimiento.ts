@@ -8,7 +8,7 @@ export type Movimiento = {
     fecha: string,
     cantidad: number,
     motivo: string,
-    tipo: 'a' | 'c' | 'r' | 't', //[Abono, Cargo, Rendimiento, Transferencia (misma cuenta)]
+    tipo: 'a' | 'c' | 'r' | 't' | 'tdc', //[Abono, Cargo, Rendimiento, Transferencia (misma cuenta), 'Pago TDC']
     categoria: Categoria
 }
 

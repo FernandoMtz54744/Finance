@@ -67,11 +67,16 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
   });
 
   const onSubmit = (movimiento: MovimientoFormType)=>{   
+    const movimientoDB: MovimientoFormType = { 
+      ...movimiento,
+      tipo: movimiento.tipo === "t" || movimiento.tipo === "tdc" ? "t" : movimiento.tipo
+    };
+
     if( modo === "editar" && initialData){
       setOpen && setOpen(false);
-      mutationUpdate.mutate({movimiento: movimiento, idMovimiento: initialData.id})
+      mutationUpdate.mutate({movimiento: movimientoDB, idMovimiento: initialData.id})
     }else{
-      mutationInsert.mutate({movimiento: movimiento, idPeriodo: idPeriodo})
+      mutationInsert.mutate({movimiento: movimientoDB, idPeriodo: idPeriodo})
     }
   }
 
@@ -126,7 +131,7 @@ export default function MovimientosForm({idPeriodo, periodo, tarjeta, modo, init
                         <SelectItem value="c">Cargo</SelectItem>
                         <SelectItem value="r">Rendimiento</SelectItem>
                         <SelectItem value="t">Transferencia (entre cuentas)</SelectItem>
-                        <SelectItem value="t">Pago de TDC</SelectItem>
+                        <SelectItem value="tdc">Pago de TDC</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
