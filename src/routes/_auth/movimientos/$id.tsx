@@ -57,8 +57,17 @@ function RouteComponent() {
         setIsLoadingFile(false);
         return;
       };
-      const arrayBuffer = await file.arrayBuffer();
-      const bytes = Array.from(new Uint8Array(arrayBuffer));
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(',')[1]);
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+      });
       const fileName = `${tarjeta.nombre} ${getTipoDescripcion[tarjeta.tipo]} - ${periodo.nombre}`;
       const response = await fetch("/api/subir-archivo",{
         method: "POST",
@@ -66,7 +75,7 @@ function RouteComponent() {
         body: JSON.stringify({
           fileName: fileName,
           mime: file.type,
-          bytes
+          base64
         })
       });
       const data = await response.json();

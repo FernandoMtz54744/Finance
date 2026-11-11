@@ -9,9 +9,9 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Método no permitido' });
 
     try{
-        const { fileName, mime, bytes } = req.body;
-        if (!bytes || !Array.isArray(bytes)) {
-            return res.status(400).json({ error: "No se recibieron bytes del archivo" });
+        const { fileName, mime, base64 } = req.body;
+        if (!base64 || typeof base64 !== 'string') {
+            return res.status(400).json({ error: "No se recibió el archivo en base64" });
         }
         //Se realiza la autenticación
         const jwtClient = new google.auth.JWT(
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         const response = await drive.files.create({
             resource: fileMetaData,
             media: {
-                body: Readable.from(Buffer.from(bytes)),
+                body: Readable.from([Buffer.from(base64, 'base64')]),
                 mimeType: mime,
             },
             fields: "webViewLink",
