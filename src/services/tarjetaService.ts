@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
-import type { TarjetaFormType } from "@/types/tarjeta";
+import type { Tarjeta, TarjetaFormType } from "@/types/tarjeta";
 
 export const getTarjetas = async (usuario: string) => {
   const { data, error } = await supabase.from("tarjetas").select("*").eq("usuario", usuario);
@@ -23,4 +23,13 @@ export const updateTarjeta = async ({tarjeta, id}:{tarjeta: TarjetaFormType, id:
   const { data, error } = await supabase.from('tarjetas').update(tarjeta).eq("id", id);
   if(error) throw error;
   return data;
+}
+
+export const getTarjetaConUltimoPeriodo = async (id: string) => {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error) throw error;
+  if (!user) throw new Error("Usuario no autenticado");
+
+  const tarjetas = await getTarjetasConUltimoPeriodo(user.id) as Tarjeta[];
+  return tarjetas.find((tarjeta: Tarjeta) => tarjeta.id === id);
 }
